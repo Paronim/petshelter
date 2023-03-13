@@ -31,11 +31,15 @@
           Essential Links
         </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <q-item clickable v-ripple to="/animals/sort" exact>
+              <q-item-section avatar>
+                <q-icon name="animals" />
+              </q-item-section>
+
+              <q-item-section>
+                Animals
+              </q-item-section>
+            </q-item>
       </q-list>
     </q-drawer>
 
