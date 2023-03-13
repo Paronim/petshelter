@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A Quasar Project",
   "productName": "Quasar Petshelter",
-  "author": "Nikita Androsenko <varzaid@gmail.com>",
+  "author": "Nikita Androsenko <varzaid@gmail.com>, Vlad Zrebny <Zreba.v@gmail.com>, Andrew Nasibullin <dushik59russs@gmail.com>",
   "private": true,
   "scripts": {
     "test": "echo \"No test specified\" && exit 0"
