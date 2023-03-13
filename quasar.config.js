@@ -64,20 +64,7 @@ module.exports = configure(function (ctx) {
       // https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
 
-      chainWebpack(chain, { isServer, isClient }) {
-        chain.module
-          .rule("vue")
-          .use("vue-loader")
-          .loader("vue-loader")
-          .tap((options) => {
-            options.transpileOptions = {
-              transforms: {
-                dangerousTaggedTemplateString: true,
-              },
-            };
-            return options;
-          });
-      },
+      chainWebpack(/* chain */) {},
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
