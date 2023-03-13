@@ -7,13 +7,19 @@ const routes = [
       { path: '', component: () => import('pages/IndexPage.vue') }
     ]
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: '/requests',
+    component: () => import('pages/RequestsPage.vue')
+  },
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
+  },
+  {
+    path: '/info',
+    component: () => import('pages/UserInfoPage.vue')
   }
+
 ]
 
 export default routes
