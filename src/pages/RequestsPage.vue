@@ -108,7 +108,8 @@ import store from 'vuex';
           // Or remove mapState and use this.$store.state.values.example
           return this.values.example;
         }
-      }
+      },
+      // mapGetters(['doneTodos', 'doneTodosCount', 'getTodoById'])
     },
 
   onSubmit () {

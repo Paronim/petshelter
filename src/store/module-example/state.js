@@ -1,5 +1,8 @@
 export default function () {
   return {
-usrName: ''
+    usrInfo: [
+      { id: 1, text: '...', done: true },
+      { id: 2, text: '...', done: false },
+    ]
   }
 }
