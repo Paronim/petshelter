@@ -1,15 +1,15 @@
 <template>
   <q-page class="flex flex-center">
-    <AddLogin />
+    <Login />
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import AddLogin from "src/components/AddLogin.vue";
+import Login from "src/components/Login.vue";
 
 export default defineComponent({
   name: "LoginPage",
-  components: { AddLogin },
+  components: { Login },
 });
 </script>

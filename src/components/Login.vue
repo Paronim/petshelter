@@ -3,14 +3,6 @@
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         filled
-        v-model="name"
-        label="Your name"
-        lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-      />
-
-      <q-input
-        filled
         v-model="email"
         label="Your email address"
         lazy-rules
@@ -53,13 +45,11 @@ export default {
   setup() {
     const $q = useQuasar();
 
-    const name = ref(null);
     const email = ref(null);
     const password = ref(null);
     const accept = ref(false);
 
     return {
-      name,
       email,
       password,
       accept,
@@ -83,7 +73,6 @@ export default {
       },
 
       onReset() {
-        name.value = null;
         email.value = null;
         password.value = null;
         accept.value = false;
