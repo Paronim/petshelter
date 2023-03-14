@@ -121,6 +121,6 @@ export default defineComponent({
 
 <style lang="scss">
   .page-container{
-    background: black  
+    background: black
   }
 </style>

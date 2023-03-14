@@ -25,25 +25,25 @@
         <div>
         <q-item-section class="q-ml-sm">
             <q-item-label class="text-settings row ">
-                <p class="col-6">Возраст:</p> 
+                <p class="col-6">Возраст:</p>
                 <p class="col-6">{{ animal.age }}</p>
             </q-item-label>
         </q-item-section>
         <q-item-section>
             <q-item-label class="text-settings row">
-                <p class="col-6">Пол:</p> 
+                <p class="col-6">Пол:</p>
                 <p class="col-6">{{ animal.sex }}</p>
             </q-item-label>
         </q-item-section>
         <q-item-section>
             <q-item-label class="text-settings row">
-                <p class="col-6">Порода:</p> 
+                <p class="col-6">Порода:</p>
                 <p class="col-6">{{ animal.breed }}</p>
             </q-item-label>
         </q-item-section>
         <q-item-section>
             <q-item-label class="text-settings row">
-                <p class="col-6">Стерилизация:</p> 
+                <p class="col-6">Стерилизация:</p>
                 <p class="col-6">{{ animal.sterilization }}</p>
             </q-item-label>
         </q-item-section>
@@ -96,7 +96,7 @@ const sortingСheck = () => {
     if(sortCat.value === true && sortDog.value === true){
         sortCat.value = false
         sortDog.value = false
-    } else 
+    } else
     if(sortCat.value === false && sortDog.value === false){
         animals.value = ANIMALS.value
     }
@@ -131,12 +131,12 @@ const sortAnimals = () => {
     .card-section-wrapper{
     display: grid;
     grid-template-rows: 1fr 1fr;
-    }  
+    }
 }
 @media screen and (min-width: 600px) {
     .card-section-wrapper{
     display: grid;
     grid-template-columns: 7fr 5fr;
-    }   
+    }
 }
 </style>
