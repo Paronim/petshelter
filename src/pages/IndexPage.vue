@@ -2,8 +2,9 @@
   <q-page class="row items-center justify-evenly">
     <q-list>
       <q-item-label header> Post List </q-item-label>
-
-      <q-item v-for="post in posts" :key="post.id">
+      <q-item v-if="loading">Loading...</q-item>
+      <q-item v-else-if="error">Error: {{ error.message }}</q-item>
+      <q-item v-else v-for="post in posts" :key="post.id">
         <q-item-section class="my-box q-hoverable">
           <q-item-label>
             {{ post.title }}
@@ -33,7 +34,7 @@ export default defineComponent({
     `);
     const posts = computed(() => result.value?.posts ?? null);
 
-    return { posts };
+    return { posts, loading, error };
   },
 });
 </script>
