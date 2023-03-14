@@ -43,7 +43,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="page-container">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -118,3 +118,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss">
+  .page-container{
+    background: black  
+  }
+</style>

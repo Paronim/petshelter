@@ -1,5 +1,11 @@
 <template>
-        <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat bordered v-for="animal in animals" :key="animal.id">
+    <div class="wrapper-animals-list">
+        <div class="q-ma-lg q-pa-sm wrapper-sorting">
+        <q-btn class="q-mx-lg" :color="sortCat ? 'primary' : 'white'" :text-color="sortCat ? 'white' : 'primary'" label="Кошки" @click="sortCatFunction()"/>
+        <q-btn :color="sortDog ? 'primary' : 'white'" :text-color="sortDog ? 'white' : 'primary'" label="Собаки" @click="sortDogFunction()"/>
+        </div>
+
+        <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="animal in animals" :key="animal.id">
       <q-card-section horizontal class="card-section-wrapper">
 
         <q-img
@@ -52,34 +58,53 @@
         </q-card-actions>
       </q-card-section>
     </q-card>
+    </div>
 </template>
 
 <script setup>
-    import { ref } from 'Vue'
-    
-    const animals = ref([
-        {
-            id: 1,
-            image: "https://img.freepik.com/free-photo/closeup-shot-of-a-fluffy-sleepy-cat-looking-at-front_181624-52708.jpg?w=1380&t=st=1678724999~exp=1678725599~hmac=ad7be5cde312081c20ea763cc9ca036eb9b24dee6bb666b5eae9b841b119e29a",
-            name: "Вася",
-            age: "1,5 месяца",
-            sex: "Мальчик",
-            breed: "неизвестно",
-            sterilization: "нет",
-            info: "Нашли на трассе"
-        },
-        {
-            id: 1,
-            image: "https://img.freepik.com/free-photo/closeup-shot-of-a-fluffy-sleepy-cat-looking-at-front_181624-52708.jpg?w=1380&t=st=1678724999~exp=1678725599~hmac=ad7be5cde312081c20ea763cc9ca036eb9b24dee6bb666b5eae9b841b119e29a",
-            name: "Вася",
-            age: "1,5 месяца",
-            sex: "Мальчик",
-            breed: "неизвестно",
-            sterilization: "нет",
-            info: "Нашли на трассе"
-        }
-    ])
+import { useStore } from "vuex";
+import { computed, ref } from "vue";
 
+const store = useStore()
+const ANIMALS = computed(() => store.getters["animals/ANIMALS"])
+const animals = ref(ANIMALS.value)
+
+
+const sortCat = ref(false)
+const sortDog = ref(false)
+const typeAnimal = ref()
+
+const sortCatFunction = () => {
+    sortCat.value = !sortCat.value
+    sortingСheck()
+    typeAnimal.value = "кот"
+    if(sortCat.value){
+        sortAnimals()
+    }
+}
+
+const sortDogFunction = () => {
+    sortDog.value = !sortDog.value
+    sortingСheck()
+    typeAnimal.value = "собака"
+    if(sortDog.value){
+        sortAnimals()
+    }
+}
+
+const sortingСheck = () => {
+    if(sortCat.value === true && sortDog.value === true){
+        sortCat.value = false
+        sortDog.value = false
+    } else 
+    if(sortCat.value === false && sortDog.value === false){
+        animals.value = ANIMALS.value
+    }
+}
+
+const sortAnimals = () => {
+    animals.value = animals.value.filter(el => el.type === typeAnimal.value)
+}
 
 </script>
 
@@ -92,19 +117,26 @@
     width: 100%;
     height: 100%;
 }
-
+.wrapper-sorting{
+    border-radius: 25px;
+    max-width: 1300px;
+    background: white;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+.wrapper-animals-list{
+    background: rgba(255, 0, 0, 0);
+}
 @media screen and (max-width: 600px) {
     .card-section-wrapper{
     display: grid;
     grid-template-rows: 1fr 1fr;
-    }
-    
+    }  
 }
 @media screen and (min-width: 600px) {
     .card-section-wrapper{
     display: grid;
     grid-template-columns: 7fr 5fr;
-}
-    
+    }   
 }
 </style>

@@ -6,3 +6,4 @@
 import AnimalsList from "../components/AnimalsList.vue"
 
 </script>
+
