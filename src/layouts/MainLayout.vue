@@ -6,8 +6,8 @@
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/" label="Main" />
-        <q-route-tab to="/login" label="Login" />
+        <q-route-tab exact to="/" label="Main" v-ripple />
+        <q-route-tab exact to="/login" label="Login" v-ripple />
       </q-tabs>
     </q-header>
 
