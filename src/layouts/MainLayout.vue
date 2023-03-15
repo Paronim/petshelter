@@ -8,6 +8,7 @@
       <q-tabs align="left">
         <q-route-tab exact to="/" label="Main" v-ripple />
         <q-route-tab exact to="/login" label="Login" v-ripple />
+        <q-route-tab exact to="/register" label="Sign Up" v-ripple />
       </q-tabs>
     </q-header>
 

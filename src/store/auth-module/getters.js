@@ -1,3 +1,3 @@
-export function USER(state) {
-  return state.user;
+export function POSTS(state) {
+  return state.posts;
 }
