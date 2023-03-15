@@ -1,8 +1,15 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header class="bg-primary text-white" height-hint="98">
+      <q-img
+        class="header-img absolute-top"
+        src="~/assets/cute-dog.png"
+        position="50% 35%"
+      />
       <q-toolbar>
-        <q-toolbar-title> Pet Shelter </q-toolbar-title>
+        <q-toolbar-title class="text-h1 text-bold">
+          Pet Shelter
+        </q-toolbar-title>
       </q-toolbar>
 
       <q-tabs align="left">
@@ -39,3 +46,20 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.header-img {
+  height: 100%;
+  z-index: -1;
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: inset 25em 0 10em rgba(0, 0, 0, 0.5);
+  }
+}
+</style>
