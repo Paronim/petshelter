@@ -1,17 +1,39 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
+  <q-page class="row items-center justify-evenly">
+    <q-list>
+      <q-item-label header> Post List </q-item-label>
+
+      <q-item v-for="post in posts" :key="post.id">
+        <q-item-section class="my-box q-hoverable">
+          <q-item-label>
+            {{ post.title }}
+          </q-item-label>
+          <q-item-label caption>ID: {{ post.id }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { useQuery } from "@vue/apollo-composable";
+import gql from "graphql-tag";
+import { defineComponent, computed } from "vue";
 
 export default defineComponent({
-  name: 'IndexPage'
-})
+  name: "IndexPage",
+  setup() {
+    const { result, loading, error } = useQuery(gql`
+      query {
+        posts {
+          id
+          title
+        }
+      }
+    `);
+    const posts = computed(() => result.value?.posts ?? null);
+
+    return { posts };
+  },
+});
 </script>

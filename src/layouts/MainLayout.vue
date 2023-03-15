@@ -1,25 +1,23 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR fFf">
+    <q-header class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
         <q-toolbar-title>
-          Quasar App
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+          </q-avatar>
+          Title
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
+
+      <q-tabs align="left">
+        <q-route-tab to="/" label="Main" />
+        <q-route-tab to="/login" label="Login" />
+        <q-route-tab to="/animals/list" label="ANIMALS" />
+      </q-tabs>
     </q-header>
 
-    <q-drawer
+    <!-- <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
@@ -31,96 +29,53 @@
           Essential Links
         </q-item-label>
 
-        <q-item clickable v-ripple to="/animals/sort" exact>
+        <q-item clickable v-ripple to="/animals/list" exact>
               <q-item-section avatar>
-                <q-icon name="animals" />
+                <q-icon name="Animals" />
               </q-item-section>
 
               <q-item-section>
                 Animals
               </q-item-section>
             </q-item>
+
       </q-list>
-    </q-drawer>
+    </q-drawer> -->
 
     <q-page-container class="page-container">
       <router-view />
     </q-page-container>
+
+    <q-footer class="bg-grey-8 text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+          </q-avatar>
+          <div>Title</div>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { defineComponent } from "vue";
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
 
-  components: {
-    EssentialLink
+  setup() {
+    return {}
   },
+});
 
-  setup () {
-    const leftDrawerOpen = ref(false)
 
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
 </script>
 
 <style lang="scss">
   .page-container{
-    background: black
+    background: black;
   }
 </style>

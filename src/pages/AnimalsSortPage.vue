@@ -2,8 +2,14 @@
     <AnimalsList/>
 </template>
 
-<script setup>
+<script>
 import AnimalsList from "../components/AnimalsList.vue"
 
+export default {
+components: {
+  AnimalsList
+},
+
+}
 </script>
 

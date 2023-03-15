@@ -1,8 +1,14 @@
 <template>
     <div class="wrapper-animals-list">
         <div class="q-ma-lg q-pa-sm wrapper-sorting">
+        <p class="q-ma-sm text-h5 text-center" >Сортировка животных</p>
+        <div class="flex column items-center wrapper-type">
+        <p class="q-ma-sm" >Вид:</p>
+        <div>
         <q-btn class="q-mx-lg" :color="sortCat ? 'primary' : 'white'" :text-color="sortCat ? 'white' : 'primary'" label="Кошки" @click="sortCatFunction()"/>
         <q-btn :color="sortDog ? 'primary' : 'white'" :text-color="sortDog ? 'white' : 'primary'" label="Собаки" @click="sortDogFunction()"/>
+        </div>
+        </div>
         </div>
 
         <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="animal in animals" :key="animal.id">
@@ -11,7 +17,7 @@
         <q-img
           class="row-for-card"
           style="max-height: 454px; max-width: 800px; object-fit: cover; border-radius: 25px;"
-          :src="animal.image" alt="animal-img"
+          :src="animal.image ? animal.image : 'https://img.freepik.com/free-photo/selective-focus-of-a-black-and-white-adorable-cat-with-its-tongue-out_181624-35744.jpg?w=1380&t=st=1678898647~exp=1678899247~hmac=a0536ffb66c97276e09ad444414201209742f9b0b0e232ff1ae53e27ed07f0e4'" alt="animal-img"
         />
 
         <q-card-actions vertical class="q-px-md flex column justify-between">
@@ -62,33 +68,37 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { useStore } from "vuex"
+import { computed, onMounted, ref } from "vue";
+import queryStore from '../QueryStore/query.js'
 
 const store = useStore()
-const ANIMALS = computed(() => store.getters["animals/ANIMALS"])
-const animals = ref(ANIMALS.value)
-
+const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.animalsDefault)
+onMounted(() => {
+  GET_DATA_ANIMALS().then((response) => {
+      if (response) {
+        console.log('Данные пришли')
+      }
+})
+})
+const animals = computed(() => store.getters['animals/ANIMALS'])
 
 const sortCat = ref(false)
 const sortDog = ref(false)
-const typeAnimal = ref()
 
 const sortCatFunction = () => {
     sortCat.value = !sortCat.value
     sortingСheck()
-    typeAnimal.value = "кот"
     if(sortCat.value){
-        sortAnimals()
+      store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortCat)
     }
 }
 
 const sortDogFunction = () => {
     sortDog.value = !sortDog.value
     sortingСheck()
-    typeAnimal.value = "собака"
     if(sortDog.value){
-        sortAnimals()
+      store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortDog)
     }
 }
 
@@ -98,14 +108,9 @@ const sortingСheck = () => {
         sortDog.value = false
     } else
     if(sortCat.value === false && sortDog.value === false){
-        animals.value = ANIMALS.value
+      GET_DATA_ANIMALS()
     }
 }
-
-const sortAnimals = () => {
-    animals.value = animals.value.filter(el => el.type === typeAnimal.value)
-}
-
 </script>
 
 <style lang="scss">
@@ -126,6 +131,9 @@ const sortAnimals = () => {
 }
 .wrapper-animals-list{
     background: rgba(255, 0, 0, 0);
+}
+.wrapper-type{
+  border-right: 1px solid rgba(0, 0, 0, 0.295);
 }
 @media screen and (max-width: 600px) {
     .card-section-wrapper{
