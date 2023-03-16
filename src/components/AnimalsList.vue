@@ -2,12 +2,19 @@
     <div class="wrapper-animals-list">
         <div class="q-ma-lg q-pa-sm wrapper-sorting">
         <p class="q-ma-sm text-h5 text-center" >Сортировка животных</p>
-        <div class="flex column items-center wrapper-type">
-        <p class="q-ma-sm" >Вид:</p>
-        <div>
-        <q-btn class="q-mx-lg" :color="sortCat ? 'primary' : 'white'" :text-color="sortCat ? 'white' : 'primary'" label="Кошки" @click="sortCatFunction()"/>
-        <q-btn :color="sortDog ? 'primary' : 'white'" :text-color="sortDog ? 'white' : 'primary'" label="Собаки" @click="sortDogFunction()"/>
+        <div class="flex justify-between items-baseline">
+          <div class="q-pa-md" style="width: 15vw">
+        <div class="q-gutter-md">
+        <q-select
+          filled
+          v-model="modelSort"
+          :options="options"
+          label="Вид:"
+          map-options
+        />
         </div>
+        </div>
+        <q-btn style="max-height: 40px; max-width: 200px; border-radius: 25px;" color="primary" label="Сортировать" @click="activeSort()"/>
         </div>
         </div>
 
@@ -73,7 +80,7 @@ import { computed, onMounted, ref } from "vue";
 import queryStore from '../QueryStore/query.js'
 
 const store = useStore()
-const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.animalsDefault)
+const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(''))
 onMounted(() => {
   GET_DATA_ANIMALS().then((response) => {
       if (response) {
@@ -83,34 +90,46 @@ onMounted(() => {
 })
 const animals = computed(() => store.getters['animals/ANIMALS'])
 
-const sortCat = ref(false)
-const sortDog = ref(false)
+const typeSortVariable = ref('')
 
-const sortCatFunction = () => {
-    sortCat.value = !sortCat.value
-    sortingСheck()
-    if(sortCat.value){
-      store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortCat)
-    }
+const typeSort = () => {
+  switch (modelSort.value.value) {
+    case 'cat':
+    typeSortVariable.value = '_like: "кот"'
+      // store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortCat)
+      break;
+    case 'dog':
+    typeSortVariable.value = '_like: "собака"'
+      // store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortDog)
+      break;
+    case 'all':
+    typeSortVariable.value = ''
+      // store.dispatch('animals/GET_DATA_ANIMALS', queryStore.animalsDefault)
+      break;
+  }
 }
 
-const sortDogFunction = () => {
-    sortDog.value = !sortDog.value
-    sortingСheck()
-    if(sortDog.value){
-      store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortDog)
-    }
+const activeSort = () => {
+  typeSort()
+  store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(typeSortVariable.value))
 }
 
-const sortingСheck = () => {
-    if(sortCat.value === true && sortDog.value === true){
-        sortCat.value = false
-        sortDog.value = false
-    } else
-    if(sortCat.value === false && sortDog.value === false){
-      GET_DATA_ANIMALS()
-    }
-}
+const modelSort = ref('all')
+
+const options = [
+        {
+          label: 'Котики',
+          value: 'cat'
+        },
+        {
+          label: 'Собачки',
+          value: 'dog'
+        },
+        {
+          label: 'Все',
+          value: 'all'
+        }
+      ]
 </script>
 
 <style lang="scss">

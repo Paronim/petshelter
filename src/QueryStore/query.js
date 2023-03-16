@@ -1,8 +1,9 @@
 import gql from "graphql-tag";
 
-const animalsDefault = gql`
+function SORT_ANIMALS (typeSortVariable) {
+return gql`
 query MyQuery {
-  animals(order_by: {id: desc}) {
+  animals(order_by: {id: desc}, where: {type: {${typeSortVariable}}}) {
     id
     breed
     info
@@ -15,41 +16,8 @@ query MyQuery {
   }
 }
   `
-
-const sortCat = gql`
-query MyQuery {
-  animals(order_by: {id: desc}, where: {type: {_like: "кот"}}) {
-    id
-    breed
-    info
-    name
-    sex
-    sterilization
-    type
-    age
-    image
-  }
 }
-  `
-
-const sortDog =gql`
-query MyQuery {
-  animals(order_by: {id: desc}, where: {type: {_like: "собака"}}) {
-    id
-    breed
-    info
-    type
-    age
-    image
-    name
-    sex
-    sterilization
-  }
-}
-  `
 
   export default {
-    sortCat,
-    sortDog,
-    animalsDefault
+    SORT_ANIMALS
   }
