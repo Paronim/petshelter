@@ -17,9 +17,9 @@
 </template>
 
 <script>
+import { defineComponent, computed } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { defineComponent, computed } from "vue";
 
 export default defineComponent({
   name: "IndexPage",
