@@ -1,12 +1,10 @@
-import { useQuery, provideApolloClient } from '@vue/apollo-composable';
-import { ApolloClient } from '@apollo/client/core'
-import { getClientOptions } from 'src/apollo/index';
+import { useQuery } from '@vue/apollo-composable';
+import  { provideApolloClientFunction } from 'src/QueryStore/query';
+
 
 export function GET_DATA_ANIMALS ( {commit}, query ) {
 
-  const apolloClient = new ApolloClient(getClientOptions())
-
-  provideApolloClient(apolloClient);
+  provideApolloClientFunction()
 
   const { result, loading, error } = useQuery(query)
     console.log(result)

@@ -1,4 +1,13 @@
 import gql from "graphql-tag";
+import { ApolloClient } from '@apollo/client/core'
+import { getClientOptions } from 'src/apollo/index';
+import { provideApolloClient } from "@vue/apollo-composable";
+
+export function provideApolloClientFunction () {
+  const apolloClient = new ApolloClient(getClientOptions())
+
+  provideApolloClient(apolloClient);
+}
 
 function SORT_ANIMALS (typeSortVariable) {
 return gql`
@@ -19,5 +28,5 @@ query MyQuery {
 }
 
   export default {
-    SORT_ANIMALS
+    SORT_ANIMALS,
   }

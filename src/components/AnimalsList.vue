@@ -2,8 +2,8 @@
     <div class="wrapper-animals-list">
         <div class="q-ma-lg q-pa-sm wrapper-sorting">
         <p class="q-ma-sm text-h5 text-center" >Сортировка животных</p>
-        <div class="flex justify-between items-baseline">
-          <div class="q-pa-md" style="width: 15vw">
+        <div class="sort-animals-wrapper">
+          <div class="q-pa-md" style="width: 300px">
         <div class="q-gutter-md">
         <q-select
           filled
@@ -159,11 +159,23 @@ const options = [
     display: grid;
     grid-template-rows: 1fr 1fr;
     }
+    .sort-animals-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
 }
 @media screen and (min-width: 600px) {
     .card-section-wrapper{
     display: grid;
     grid-template-columns: 7fr 5fr;
     }
+    .sort-animals-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    }
 }
 </style>
+
+
