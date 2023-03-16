@@ -11,11 +11,13 @@
           Pet Shelter
         </q-toolbar-title>
       </q-toolbar>
-
       <q-tabs align="left">
         <q-route-tab exact to="/" label="Main" v-ripple />
-        <q-route-tab exact to="/login" label="Login" v-ripple />
-        <q-route-tab exact to="/register" label="Sign Up" v-ripple />
+        <q-space />
+        <q-item id="user-button"></q-item>
+        <q-item id="auth-links" dense>
+          <q-btn flat @click="SignIn">Login</q-btn>
+        </q-item>
       </q-tabs>
     </q-header>
 
@@ -37,12 +39,18 @@
 
 <script>
 import { defineComponent } from "vue";
+import Clerk from "@clerk/clerk-js";
+import userData from "src/sdk/users";
 
 export default defineComponent({
   name: "MainLayout",
 
   setup() {
-    return {};
+    const clerkUser = window.Clerk.user;
+    const SignIn = () => {
+      window.Clerk.openSignIn();
+    };
+    return { SignIn, clerkUser };
   },
 });
 </script>

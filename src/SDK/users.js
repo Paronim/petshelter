@@ -1,3 +1,4 @@
+import Clerk from "@clerk/clerk-js";
 import axios from "axios";
 
 const get = async () => {
@@ -24,11 +25,7 @@ const update = async (data) => {
 };
 
 const login = async ({ email, password }) => {
-  try {
-    console.log({ email: email.value, password: password.value });
-  } catch (error) {
-    throw error;
-  }
+  window.Clerk.openSignIn();
 };
 
 const logout = async () => {
