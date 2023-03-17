@@ -9,26 +9,28 @@ export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
   });
   const authLink = setContext((_, { headers }) => {
     const token = sessionStorage.getItem("token");
-    return {
-      headers: {
-        ...headers,
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    };
+    if (token === "") {
+      return {
+        headers: {
+          ...headers,
+        },
+      };
+    } else {
+      return {
+        headers: {
+          ...headers,
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      };
+    }
   });
   return Object.assign(
     // General options.
     {
-      // link: createHttpLink({
-      //   uri:
-      //     process.env.GRAPHQL_URI ||
-      //     // Change to your graphql endpoint.
-      //     "https://huge-albacore-77.hasura.app/v1/graphql",
-      // }),
       link: authLink.concat(httpLink),
       cache: new InMemoryCache(),
     },
-    // Specific Quasar mode options.
+
     process.env.MODE === "spa"
       ? {
           //

@@ -32,6 +32,8 @@ onMounted(() => {
           "token",
           await Clerk.session.getToken({ template: "hasura" })
         );
+      } else {
+        sessionStorage.setItem("token", "");
       }
     } catch (err) {
       console.error("Error starting Clerk: ", err);
