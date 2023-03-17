@@ -32,7 +32,7 @@ export default defineComponent({
         }
       }
     `);
-    const posts = computed(() => result.value?.posts ?? null);
+    const posts = computed(() => result.value?.posts);
     return { posts, loading, error };
   },
 });
