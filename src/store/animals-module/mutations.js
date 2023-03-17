@@ -1,8 +1,9 @@
+
 import { computed } from "vue";
 
 export function SET_ANIMALS_TO_STATE (state, result) {
 
-  const animals = computed(() => result.value?.animals ?? null);
-  console.log(animals)
+  const animals = computed(() => result.value?.animals  ?? null);
+
   state.animals = animals;
 }

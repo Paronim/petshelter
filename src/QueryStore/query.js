@@ -3,16 +3,17 @@ import { ApolloClient } from '@apollo/client/core'
 import { getClientOptions } from 'src/apollo/index';
 import { provideApolloClient } from "@vue/apollo-composable";
 
+const apolloClient = new ApolloClient(getClientOptions())
+
 export function provideApolloClientFunction () {
-  const apolloClient = new ApolloClient(getClientOptions())
 
   provideApolloClient(apolloClient);
 }
 
-function SORT_ANIMALS (typeSortVariable) {
+function SORT_ANIMALS (typeSortVariable, ageSortVariable) {
 return gql`
 query MyQuery {
-  animals(order_by: {id: desc}, where: {type: {${typeSortVariable}}}) {
+  animals(order_by: {id: desc}, where: {type: {${typeSortVariable}}, _and: {age: {${ageSortVariable}}}}) {
     id
     breed
     info

@@ -3,11 +3,23 @@
         <div class="q-ma-lg q-pa-sm wrapper-sorting">
         <p class="q-ma-sm text-h5 text-center" >Сортировка животных</p>
         <div class="sort-animals-wrapper">
+        <div>
+        <p class="text-h6">Возраст:</p>
+        <q-range
+        style="max-width: 500px; min-width: 300px"
+        v-model="modelSortAge"
+        :marker-labels="arrayMarkerLabel"
+        :min="0"
+        :max="6"
+        />
+        </div>
+        </div>
+        <div class="sort-animals-wrapper">
           <div class="q-pa-md" style="width: 300px">
         <div class="q-gutter-md">
         <q-select
           filled
-          v-model="modelSort"
+          v-model="modelSortType"
           :options="options"
           label="Вид:"
           map-options
@@ -80,7 +92,7 @@ import { computed, onMounted, ref } from "vue";
 import queryStore from '../QueryStore/query.js'
 
 const store = useStore()
-const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(''))
+const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', ''))
 onMounted(() => {
   GET_DATA_ANIMALS().then((response) => {
       if (response) {
@@ -91,9 +103,10 @@ onMounted(() => {
 const animals = computed(() => store.getters['animals/ANIMALS'])
 
 const typeSortVariable = ref('')
+const ageSortVariable = ref('')
 
 const typeSort = () => {
-  switch (modelSort.value.value) {
+  switch (modelSortType.value.value) {
     case 'cat':
     typeSortVariable.value = '_like: "кот"'
       // store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortCat)
@@ -109,12 +122,20 @@ const typeSort = () => {
   }
 }
 
-const activeSort = () => {
-  typeSort()
-  store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(typeSortVariable.value))
+const ageSort = () => {
+  ageSortVariable.value = `_gte: ${minPriceLabel.value}, _lte: ${maxPriceLabel.value}`
+  console.log(minPriceLabel.value)
+  console.log(maxPriceLabel.value)
 }
 
-const modelSort = ref('all')
+const activeSort = () => {
+  typeSort()
+  ageSort()
+  store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(typeSortVariable.value, ageSortVariable.value))
+}
+
+// q-select
+const modelSortType = ref('all')
 
 const options = [
         {
@@ -130,6 +151,25 @@ const options = [
           value: 'all'
         }
       ]
+
+// q-range
+const modelSortAge = ref({
+      min: 0,
+      max: 6
+    })
+
+  const minPriceLabel = computed(() => modelSortAge.value.min * 12)
+  const maxPriceLabel = computed(() => modelSortAge.value.max * 12)
+  const arrayMarkerLabel = [
+        { value: 0, label: '0' },
+        { value: 1, label: '1' },
+        { value: 2, label: '2' },
+        { value: 3, label: '3' },
+        { value: 4, label: '4' },
+        { value: 5, label: '5' },
+        { value: 6, label: '>6' }
+      ]
+
 </script>
 
 <style lang="scss">
