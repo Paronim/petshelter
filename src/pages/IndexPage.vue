@@ -13,13 +13,22 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <router-view>
+      <button
+        @click.prevent="$router.push( `/requests` )"
+      >
+        requests
+      </button>
+    </router-view>
   </q-page>
 </template>
-
+<!--https://huge-albacore-77.hasura.app/v1/graphql-->
 <script>
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { defineComponent, computed } from "vue";
+import {mapActions, mapGetters} from "vuex";
+
 
 export default defineComponent({
   name: "IndexPage",

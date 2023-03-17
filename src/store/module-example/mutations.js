@@ -1,4 +1,8 @@
 import state from './state'
-export function someMutation (/* state */) {
-  state.num = 5;
+import {computed} from 'vue';
+
+export function SET_POSTS (state, result) {
+  const requests = computed(()=>result.value?.requests ?? null);
+  state.requests = requests;
 }
+
