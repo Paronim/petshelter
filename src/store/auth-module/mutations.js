@@ -1,3 +1,5 @@
-export function SET_USER(state, user) {
-  state.user = user;
+import { computed } from "vue";
+export function SET_POSTS(state, result) {
+  const posts = computed(() => result.value?.posts ?? null);
+  state.posts = posts;
 }

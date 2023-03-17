@@ -9,7 +9,7 @@ import { defineComponent } from "vue";
 import AuthForm from "src/components/AuthForm.vue";
 
 export default defineComponent({
-  name: "LoginPage",
+  name: "RegisterPage",
   components: { AuthForm },
 });
 </script>
