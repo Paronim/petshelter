@@ -3,50 +3,72 @@ import { computed } from "vue";
 
 export function ANIMALS (state) {
 
-  // const animals = computed(() => {
-  //     state.animals.map((animal) => {
+try{
+  const animals = computed(() => {
 
-  //       console.log(animal)
+      let modifiedVariableAge = ''
+      let modifiedVariableSex = ''
+      let modifiedVariableSterilization = ''
 
-  //       // console.log(Object.getOwnPropertyDescriptor(animal, "age"))
 
-  //       function defPropAnimal (age) {
-  //         Object.defineProperty(animal, "age", {
-  //           writable: true,
-  //           configurable: true,
-  //           value: age
-  //           })
-  //       }
+        let animalAuxiliAry = state.animals.map((animal) => {
 
-  //         switch(true){
-  //           case animal.age == 1:
-  //             '1 месяц'
-  //             break;
-  //           // case animal.age >= 2 && animal.age <= 4:
-  //           //   animal.age += ' месяца'
-  //           //   break;
-  //           // case animal.age >= 5 && animal.age <=12:
-  //           //   animal.age += ' месяцев'
-  //           //   break;
-  //           // case 4:
-  //           //   animal.age += ' месяц'
-  //           //   break;
-  //           // case 1:
-  //           //   animal.age += ' месяц'
-  //           //   break;
-  //           // case 1:
-  //           //   animal.age += ' месяц'
-  //           //   break;
-  //           // case 1:
-  //           //   animal.age += ' месяц'
-  //           //   break;
+        switch(true){
+          case animal.age === 1:
+            modifiedVariableAge = animal.age + ' месяц'
+            break;
+          case animal.age >= 2 && animal.age <= 4:
+            modifiedVariableAge = animal.age + ' месяца'
+            break;
+          case animal.age >= 5 && animal.age <=11:
+            modifiedVariableAge = animal.age + ' месяцев'
+            break;
+          case animal.age === 12:
+            modifiedVariableAge = (animal.age / 12) + ' год'
+            break;
+          case animal.age >= 24 && animal.age <= 48:
+            modifiedVariableAge = (animal.age / 12) + ' года'
+            break;
+          case animal.age > 48:
+            modifiedVariableAge = (animal.age / 12) + ' лет'
+            break;
+      }
 
-  //       }
+      switch(true){
+        case animal.sex === true:
+          modifiedVariableSex = 'Мальчик'
+          break;
+        case animal.sex === false:
+          modifiedVariableSex = 'Девочка'
+      }
 
-  //     }
-  //     )
-  //   }
-  // )
-  //   console.log(animals.value)
-    return state.animals
+      switch(true){
+        case animal.sterilization === true:
+          modifiedVariableSterilization = 'Есть'
+          break;
+        case animal.sterilization === false:
+          modifiedVariableSterilization = 'Нет'
+      }
+
+      const newAnimalObject = {
+        id: animal.id,
+        breed: animal.breed,
+        info: animal.info,
+        type: animal.type,
+        age: modifiedVariableAge,
+        image: animal.image,
+        name: animal.name,
+        sex: modifiedVariableSex,
+        sterilization: modifiedVariableSterilization
+      }
+      return newAnimalObject
+      })
+      return animalAuxiliAry
+      })
+
+
+    return animals.value
+  } catch (error) {
+      console.log('Данные еще не пришли')
+  }
 }

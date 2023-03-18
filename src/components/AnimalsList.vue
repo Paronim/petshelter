@@ -109,23 +109,18 @@ const typeSort = () => {
   switch (modelSortType.value.value) {
     case 'cat':
     typeSortVariable.value = '_like: "кот"'
-      // store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortCat)
       break;
     case 'dog':
     typeSortVariable.value = '_like: "собака"'
-      // store.dispatch('animals/GET_DATA_ANIMALS', queryStore.sortDog)
       break;
     case 'all':
     typeSortVariable.value = ''
-      // store.dispatch('animals/GET_DATA_ANIMALS', queryStore.animalsDefault)
       break;
   }
 }
 
 const ageSort = () => {
   ageSortVariable.value = `_gte: ${minPriceLabel.value}, _lte: ${maxPriceLabel.value}`
-  console.log(minPriceLabel.value)
-  console.log(maxPriceLabel.value)
 }
 
 const activeSort = () => {
