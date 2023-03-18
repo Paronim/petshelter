@@ -25,7 +25,7 @@ export default defineComponent({
   name: "IndexPage",
   setup() {
     const { result, loading, error } = useQuery(gql`
-      query MyQuery {
+      query {
         posts {
           id
           title
