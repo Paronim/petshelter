@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
