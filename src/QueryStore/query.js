@@ -10,10 +10,10 @@ export function provideApolloClientFunction () {
   provideApolloClient(apolloClient);
 }
 
-function SORT_ANIMALS (typeSortVariable, ageSortVariable) {
+function SORT_ANIMALS (typeSortVariable, ageSortVariable, sexSortVariable, sterilizationSortVariable) {
 return gql`
 query MyQuery {
-  animals(order_by: {id: desc}, where: {type: {${typeSortVariable}}, _and: {age: {${ageSortVariable}}}}) {
+  animals(order_by: {id: desc}, where: { sex: {${sexSortVariable}}, sterilization: {${sterilizationSortVariable}}, type: {${typeSortVariable}}, _and: {age: {${ageSortVariable}}}}) {
     id
     breed
     info

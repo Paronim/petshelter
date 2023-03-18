@@ -6,7 +6,7 @@ export function GET_DATA_ANIMALS ( {commit}, query ) {
 
   provideApolloClientFunction()
 
-  const { result, loading, error } = useQuery(query)
+  const { result } = useQuery(query)
 
     commit('SET_ANIMALS_TO_STATE', result)
 

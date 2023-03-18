@@ -1,5 +1,5 @@
 
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 export function SET_ANIMALS_TO_STATE (state, result) {
 

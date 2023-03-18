@@ -20,8 +20,30 @@
         <q-select
           filled
           v-model="modelSortType"
-          :options="options"
+          :options="optionsType"
           label="Вид:"
+          map-options
+        />
+        </div>
+        </div>
+        <div class="q-pa-md" style="width: 300px">
+        <div class="q-gutter-md">
+        <q-select
+          filled
+          v-model="modelSortSex"
+          :options="optionsSex"
+          label="Пол:"
+          map-options
+        />
+        </div>
+        </div>
+        <div class="q-pa-md" style="width: 300px">
+        <div class="q-gutter-md">
+        <q-select
+          filled
+          v-model="modelSortSterilization"
+          :options="optionsSterilization"
+          label="Стерилизация:"
           map-options
         />
         </div>
@@ -92,7 +114,7 @@ import { computed, onMounted, ref } from "vue";
 import queryStore from '../QueryStore/query.js'
 
 const store = useStore()
-const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', ''))
+const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', '', '', ''))
 onMounted(() => {
   GET_DATA_ANIMALS().then((response) => {
       if (response) {
@@ -104,6 +126,8 @@ const animals = computed(() => store.getters['animals/ANIMALS'])
 
 const typeSortVariable = ref('')
 const ageSortVariable = ref('')
+const sexSortVariable = ref('')
+const sterilizationSortVariable = ref('')
 
 const typeSort = () => {
   switch (modelSortType.value.value) {
@@ -123,16 +147,48 @@ const ageSort = () => {
   ageSortVariable.value = `_gte: ${minPriceLabel.value}, _lte: ${maxPriceLabel.value}`
 }
 
+const sexSort = () => {
+  switch(modelSortSex.value.value){
+    case true:
+      sexSortVariable.value = '_eq: true'
+      break;
+    case false:
+      sexSortVariable.value = '_eq: false'
+      break;
+    case 'all':
+      sexSortVariable.value = ''
+      break;
+  }
+
+}
+
+const sterilizationSort = () => {
+  switch(modelSortSterilization.value.value){
+    case true:
+      sterilizationSortVariable.value = '_eq: true'
+      break;
+    case false:
+      sterilizationSortVariable.value = '_eq: false'
+      break;
+    case 'all':
+      sterilizationSortVariable.value = ''
+      break;
+  }
+
+}
+
 const activeSort = () => {
   typeSort()
   ageSort()
-  store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(typeSortVariable.value, ageSortVariable.value))
+  sexSort()
+  sterilizationSort()
+  store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(typeSortVariable.value, ageSortVariable.value, sexSortVariable.value, sterilizationSortVariable.value))
 }
 
 // q-select
 const modelSortType = ref('all')
 
-const options = [
+const optionsType = [
         {
           label: 'Котики',
           value: 'cat'
@@ -140,6 +196,40 @@ const options = [
         {
           label: 'Собачки',
           value: 'dog'
+        },
+        {
+          label: 'Все',
+          value: 'all'
+        }
+      ]
+
+const modelSortSex = ref('all')
+
+const optionsSex = [
+        {
+          label: 'Мальчик',
+          value: true
+        },
+        {
+          label: 'Девочка',
+          value: false
+        },
+        {
+          label: 'Все',
+          value: 'all'
+        }
+      ]
+
+const modelSortSterilization = ref('all')
+
+const optionsSterilization = [
+        {
+          label: 'Есть',
+          value: true
+        },
+        {
+          label: 'Нет',
+          value: false
         },
         {
           label: 'Все',
