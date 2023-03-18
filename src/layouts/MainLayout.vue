@@ -13,16 +13,16 @@
       </q-toolbar>
       <q-tabs align="left">
         <q-route-tab exact to="/" label="Main" v-ripple />
+        <q-route-tab to="/animals/list" label="ANIMALS" />
         <q-space />
         <q-item id="user-button"></q-item>
         <q-item id="auth-links" dense>
           <q-btn flat @click="SignIn">Login</q-btn>
         </q-item>
-        <q-route-tab to="/animals/list" label="ANIMALS" />
       </q-tabs>
     </q-header>
 
-    <q-page-container >
+    <q-page-container class="page-container">
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />

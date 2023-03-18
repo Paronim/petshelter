@@ -1,8 +1,14 @@
 <template>
     <div class="wrapper-animals-list">
         <div class="q-ma-lg q-pa-sm wrapper-sorting">
-        <p class="q-ma-sm text-h5 text-center" >Сортировка животных</p>
-        <div class="sort-animals-wrapper">
+        <div @click="sortBlock = !sortBlock" class="cursor-pointer flex justify-center items-center">
+          <p class="q-ma-sm text-h5 text-center" >Сортировка животных</p>
+          <q-icon :name="sortBlock ?  'keyboard_arrow_up' : 'keyboard_arrow_down'" />
+        </div>
+
+        <div v-if="sortBlock" >
+
+        <div class="sort-animals-wrapper" >
         <div>
         <p class="text-h6">Возраст:</p>
         <q-range
@@ -52,6 +58,24 @@
         </div>
         </div>
 
+      </div>
+
+      <div class="q-ma-lg q-pa-sm wrapper-sorting">
+        <div @click="adminBlock = !adminBlock" class="cursor-pointer flex justify-center items-center">
+          <p class="q-ma-sm text-h5 text-center" >Панель админа</p>
+          <q-icon :name="adminBlock ?  'keyboard_arrow_up' : 'keyboard_arrow_down'" />
+        </div>
+
+        <div v-if="adminBlock" >
+
+        <div class="sort-animals-wrapper" >
+          <FormAddAnimals/>
+        </div>
+        </div>
+
+      </div>
+
+
         <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="animal in animals" :key="animal.id">
       <q-card-section horizontal class="card-section-wrapper">
 
@@ -62,7 +86,9 @@
         />
 
         <q-card-actions vertical class="q-px-md flex column justify-between">
-            <div>
+
+          <div class="flex justify-around" >
+            <div class="q-ml-lg" style="flex-grow: 1;">
         <q-item-section class="q-ml-sm">
             <q-item-label class="text-h2 text-settings q-mb-md" >{{ animal.name }}</q-item-label>
         </q-item-section>
@@ -97,21 +123,26 @@
         </div>
         </div>
 
-        <div class="flex justify-around no-wrap">
-            <q-btn color="secondary" label="Забрать домой" class="button-animals text-animals"/>
-            <q-btn color="secondary" label="Помощь" class="q-ml-md text-animals button-animals"  />
-        </div>
+          <q-icon class="cursor-pointer" style="width: 50px; height: 50px;" name="create" />
 
+        </div>
+        <div class="flex justify-around">
+            <q-btn color="primary" label="Забрать домой" class="button-animals text-animals"/>
+            <q-btn color="primary" label="Помощь" class="q-ml-md text-animals button-animals"  />
+        </div>
         </q-card-actions>
       </q-card-section>
     </q-card>
     </div>
+
+
 </template>
 
 <script setup>
 import { useStore } from "vuex"
 import { computed, onMounted, ref } from "vue";
-import queryStore from '../QueryStore/query.js'
+import queryStore from '../QueryStore/query.js';
+import FormAddAnimals from "./FormAddAnimals.vue";
 
 const store = useStore()
 const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', '', '', ''))
@@ -124,10 +155,13 @@ onMounted(() => {
 })
 const animals = computed(() => store.getters['animals/ANIMALS'])
 
+const sortBlock = ref(false)
+const adminBlock = ref(false)
 const typeSortVariable = ref('')
 const ageSortVariable = ref('')
 const sexSortVariable = ref('')
 const sterilizationSortVariable = ref('')
+
 
 const typeSort = () => {
   switch (modelSortType.value.value) {
@@ -255,6 +289,7 @@ const modelSortAge = ref({
         { value: 6, label: '>6' }
       ]
 
+
 </script>
 
 <style lang="scss">
@@ -279,7 +314,7 @@ const modelSortAge = ref({
 .wrapper-type{
   border-right: 1px solid rgba(0, 0, 0, 0.295);
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
     .card-section-wrapper{
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -290,7 +325,7 @@ const modelSortAge = ref({
     align-items: center;
     }
 }
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 800px) {
     .card-section-wrapper{
     display: grid;
     grid-template-columns: 7fr 5fr;
@@ -300,6 +335,7 @@ const modelSortAge = ref({
     justify-content: space-between;
     align-items: baseline;
     }
+
 }
 </style>
 
