@@ -1,66 +1,67 @@
 <template>
-  <div class="q-pa-md" style="max-width: 400px">
+  <div class="q-pa-md q-gutter-sm">
+    <q-btn label="Click me" color="primary" @click="prompt = true" />
+    <q-dialog v-model="prompt" persistent>
+      <q-card style="min-width: 350px;">
+        <q-card-section>
+          <div class="text-h6">ОСТАВИТЬ ЗАЯВКУ</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-input
+            filled
+            v-model="req.name"
+            label="Кличка питомца"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
+          <div style="display: flex; justify-content: space-between;">
+            <q-input
+              filled
+              v-model="req.age"
+              label="возраст"
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type something']"
+            />
+            <q-input
+              style="padding-left: 20px;"
+              filled
+              v-model="req.sex"
+              label="пол"
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type something']"
+            />
+          </div>
+          <q-input
+            filled
+            v-model="req.FIO"
+            label="ФИО"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
+          <q-input
+            filled
+            v-model="req.phone"
+            label="тел."
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
 
-    <q-form
-      @submit.prevent="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-    >
-      <q-input
-        filled
-        v-model="req.name"
-        label="Name *"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
-      />
-      <div class="age__sex">
-        <q-input
-          filled
-          v-model="req.age"
-          label="Age *"
-         lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
-        />
-        <q-input
-          style="padding-left: 20px;"
-          filled
-          v-model="req.sex"
-          label="Sex *"
-          lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
-        />
-      </div>
-      <q-input
-        filled
-        v-model="req.FIO"
-        label="FIO *"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
-      />
-      <q-input
-        filled
-        v-model="req.phone"
-        label="Phone *"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
-      />
-
-      <q-input
-        filled
-        v-model="req.email"
-        label="Your email *"
-        lazy-rules
-        :rules="[
+          <q-input
+            filled
+            v-model="req.email"
+            label="почта"
+            lazy-rules
+            :rules="[
           val => val !== null && val !== '' || 'Please type your age',
         ]"
-      />
-<!--      <q-toggle v-model="accept" label="I accept the license and terms" />-->
-      <div>
-        <q-btn label="Submit" type="submit" color="primary"/>
-        <q-btn @click.prevent="$router.push( `/info` )" label="Next" type="reset" color="primary" flat class="q-ml-sm" />
-      </div>
-    </q-form>
-
+          />
+        </q-card-section>
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Отмена" v-close-popup />
+          <q-btn flat label="Забрать домой" @click="onSubmit" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -82,7 +83,6 @@ import store from 'vuex';
       email:''
     })
   const $q = useQuasar()
-
   const name = ref(null)
   const age = ref(null)
   const accept = ref(false)
@@ -109,6 +109,7 @@ import store from 'vuex';
       })
     )
   return {
+    prompt: ref(false),
     req,
     onSubmit,
     name,
@@ -146,8 +147,4 @@ import store from 'vuex';
 }
 </script>
 <style sccs>
-.age__sex{
-  display: flex;
-  justify-content: space-between;
-}
 </style>
