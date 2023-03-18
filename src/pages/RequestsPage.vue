@@ -32,7 +32,7 @@
       </div>
       <q-input
         filled
-        v-model="req.fio"
+        v-model="req.FIO"
         label="FIO *"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
@@ -47,7 +47,6 @@
 
       <q-input
         filled
-        type="email"
         v-model="req.email"
         label="Your email *"
         lazy-rules
@@ -78,7 +77,7 @@ import store from 'vuex';
       name:'',
       age:'',
       sex:'',
-      fio:'',
+      FIO:'',
       phone:'',
       email:''
     })
@@ -88,8 +87,8 @@ import store from 'vuex';
   const age = ref(null)
   const accept = ref(false)
     const {mutate: onSubmit} = useMutation(gql`
-    mutation requests ($name: String, $age: Integer, $sex: String, $fio: String, $phone: Integer, $email: String){
-    insert_users_one(object: {name: $name, age: $age, sex: $sex, fio: $fio, phone: $phone, email: $email}){
+    mutation MyMutation ($name: String, $age: Int, $sex: String, $FIO: String, $phone: Int, $email: String){
+    insert_requests_one(object: {name: $name, age: $age, sex: $sex, FIO: $FIO, phone: $phone, email: $email}){
       FIO
       age
       email
@@ -103,7 +102,7 @@ import store from 'vuex';
         name: req.value.name,
         age:req.value.age,
         sex:req.value.sex,
-        fio:req.value.fio,
+        FIO:req.value.FIO,
         phone:req.value.phone,
         email:req.value.email
       }
