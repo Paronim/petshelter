@@ -14,6 +14,7 @@
       <q-tabs align="left">
         <q-route-tab exact to="/" label="Main" v-ripple />
         <q-space />
+        <q-btn @click="gToken">Token</q-btn>
         <q-item id="user-button"></q-item>
         <q-item id="auth-links" dense>
           <q-btn flat @click="SignIn">Login</q-btn>
@@ -44,10 +45,13 @@ export default defineComponent({
   name: "MainLayout",
 
   setup() {
+    const gToken = () => {
+      console.log(sessionStorage.getItem("token"));
+    };
     const SignIn = () => {
       window.Clerk.openSignIn();
     };
-    return { SignIn };
+    return { SignIn, gToken };
   },
 });
 </script>
