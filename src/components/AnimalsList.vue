@@ -67,6 +67,9 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+
+
     <div class="wrapper-animals-list">
 
         <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="animal in animals" :key="animal.id">
