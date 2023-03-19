@@ -37,6 +37,7 @@
       </q-toolbar>
     </q-footer>
   </q-layout>
+
 </template>
 
 <script>

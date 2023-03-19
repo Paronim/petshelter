@@ -1,2 +1,4 @@
-export function someGetter (/* state */) {
+
+export function POSTS(state){
+  return state.requests
 }
