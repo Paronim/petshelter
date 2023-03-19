@@ -4,7 +4,7 @@
       <q-item-label header> Post List </q-item-label>
       <q-item v-if="loading">Loading...</q-item>
       <q-item v-else-if="error">Error: {{ error.message }}</q-item>
-      <q-item v-else v-for="post in posts" :key="post.id">
+      <q-item v-for="post in posts" :key="post.id">
         <q-item-section class="my-box q-hoverable">
           <q-item-label>
             {{ post.title }}
@@ -23,23 +23,22 @@
   </q-page>
 </template>
 <script>
+import { defineComponent, computed, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { defineComponent, computed } from "vue";
 
 export default defineComponent({
   name: "IndexPage",
   setup() {
     const { result, loading, error } = useQuery(gql`
-      query MyQuery {
+      query {
         posts {
           id
           title
         }
       }
     `);
-    const posts = computed(() => result.value?.posts ?? null);
-
+    const posts = computed(() => result.value?.posts);
     return { posts, loading, error };
   },
 });
