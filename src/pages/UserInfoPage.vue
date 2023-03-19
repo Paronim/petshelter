@@ -30,7 +30,7 @@
           <q-item v-for="req in POSTS" :key="req.id">
             <q-item-section class="my-box q-hoverable">
               <q-item-label style="color: white">
-                <p>{{ req.FIO }} {{ req.phone }} {{ req.email }} requests on getting {{ req.name }} {{ req.age }} {{ req.sex }}</p>
+                <p style="border: 1px solid #fefefe; border-radius: 10px; padding: 5px;">{{ req.FIO }} {{ req.phone }} {{ req.email }} requests on getting {{ req.name }} {{ req.age }} {{ req.sex }}</p>
               </q-item-label>
             </q-item-section>
           </q-item>
