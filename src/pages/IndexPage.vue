@@ -13,9 +13,15 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <router-view>
+      <button
+        @click.prevent="$router.push( `/requests` )"
+      >
+        requests
+      </button>
+    </router-view>
   </q-page>
 </template>
-
 <script>
 import { defineComponent, computed, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
