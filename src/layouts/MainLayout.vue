@@ -13,6 +13,7 @@
       </q-toolbar>
       <q-tabs align="left">
         <q-route-tab exact to="/" label="Main" v-ripple />
+        <q-route-tab to="/animals/list" label="ANIMALS" />
         <q-space />
         <q-btn @click="gToken">Token</q-btn>
         <q-item id="user-button"></q-item>
@@ -22,7 +23,7 @@
       </q-tabs>
     </q-header>
 
-    <q-page-container>
+    <q-page-container class="page-container">
       <router-view v-slot="{ Component }">
         <keep-alive>
           <component :is="Component" />
@@ -41,6 +42,7 @@
 <script>
 import { defineComponent } from "vue";
 
+
 export default defineComponent({
   name: "MainLayout",
 
@@ -54,10 +56,15 @@ export default defineComponent({
     return { SignIn, gToken };
   },
 });
+
+
 </script>
 
 <style lang="scss">
-.header-img {
+  .page-container{
+    background: black;
+  }
+  .header-img {
   height: 100%;
   z-index: -1;
   &::after {
@@ -72,4 +79,4 @@ export default defineComponent({
   }
 }
 </style>
->
+
