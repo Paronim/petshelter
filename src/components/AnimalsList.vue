@@ -63,7 +63,7 @@
       </q-card-section>
       <q-card-actions align="right" class="text-primary">
         <q-btn style="background: #EF7540; color:white;border-radius: 25px;" flat label="Отмена" v-close-popup />
-        <q-btn style="background: #EF7540;border-radius: 25px;" flat label="Забрать домой" @click="onSubmit" v-close-popup />
+        <q-btn style="background: #EF7540; color:white; border-radius: 25px;" flat label="Забрать домой" @click="onSubmit" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
