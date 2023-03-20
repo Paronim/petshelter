@@ -24,20 +24,51 @@
       >
         <q-spinner-dots size="2rem" />
       </q-chat-message>
-      <q-container class="q-mt-md row items-center justify-end no-wrap">
-        <q-input class="full-width" outlined v-model="text" label="Сообщение" />
+      <div class="q-mt-md row items-center justify-end no-wrap">
+        <q-input class="full-width" outlined label="Сообщение" />
         <q-btn
           class="q-ml-md"
           push
           round
           color="primary"
           icon="send"
-          type="submit"
-      /></q-container>
+          @click="sendMessage('Ну привет, ВебСокет')"
+        />
+      </div>
     </div>
   </q-page>
 </template>
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      connection: null,
+    };
+  },
+  methods: {
+    sendMessage: function (message) {
+      console.log(this.connection);
+      this.connection.send(message);
+    },
+  },
+  created() {
+    console.log("Подключение...");
+    this.connection = new WebSocket("ws://127.0.0.1:15674/ws");
+
+    this.connection.onopen = (event) => {
+      console.log(event);
+      console.log("Подключение успешно");
+    };
+    this.connection.onerror = (event) => {
+      console.log(event);
+      console.log("ОШИБКА");
+    };
+    this.connection.onmessage = (event) => {
+      console.log(event);
+    };
+  },
+};
+</script>
 <style lang="scss">
 .my-emoticon {
   vertical-align: middle;
