@@ -1,35 +1,39 @@
 <template>
-  <q-page class="column items-center justify-evenly">
+  <q-page class="row items-start justify-evenly">
     <div
       style="width: 100%; max-width: 400px"
-      class="q-pa-md bg-white rounded-borders"
+      class="q-mt-xl q-pa-md bg-white rounded-borders"
     >
       <q-chat-message
-        name="me"
-        avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-        stamp="7 minutes ago"
+        name="Я"
+        avatar="https://images.clerk.dev/oauth_google/img_2N5mzvtFLSmqEExvQtKNAchCgMy.png?width=80"
+        stamp="7 минут назад"
         sent
         text-color="white"
         bg-color="primary"
       >
-        <div>Hey there!</div>
+        <div>Привет!</div>
 
-        <div>
-          Have you seen Quasar?
-          <img
-            src="https://cdn.quasar.dev/img/discord-omq.png"
-            class="my-emoticon"
-          />
-        </div>
+        <div>Ты уже поставила RabbitMQ?</div>
       </q-chat-message>
 
       <q-chat-message
-        name="Jane"
+        name="Собеседник"
         avatar="https://cdn.quasar.dev/img/avatar5.jpg"
         bg-color="amber"
       >
         <q-spinner-dots size="2rem" />
       </q-chat-message>
+      <q-container class="q-mt-md row items-center justify-end no-wrap">
+        <q-input class="full-width" outlined v-model="text" label="Сообщение" />
+        <q-btn
+          class="q-ml-md"
+          push
+          round
+          color="primary"
+          icon="send"
+          type="submit"
+      /></q-container>
     </div>
   </q-page>
 </template>
