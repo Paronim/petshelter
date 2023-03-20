@@ -37,23 +37,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-.page-container {
-  background: black;
-}
-.header-img {
-  height: 100%;
-  z-index: -1;
-  &::after {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    box-shadow: inset 25em 0 10em rgba(0, 0, 0, 0.5);
-  }
-}
-</style>

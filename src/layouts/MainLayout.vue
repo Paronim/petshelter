@@ -13,7 +13,6 @@
       </q-toolbar>
       <q-tabs align="left">
         <q-route-tab exact to="/" label="Main" v-ripple />
-        <q-route-tab to="/animals/list" label="Animals" v-ripple />
         <q-route-tab to="/info" label="Requests" v-ripple />
         <q-space />
         <q-item id="user-button"></q-item>
@@ -56,7 +55,7 @@ export default defineComponent({
 
 <style lang="scss">
 .page-container {
-  background: black;
+  background: #282828;
 }
 .header-img {
   height: 100%;
