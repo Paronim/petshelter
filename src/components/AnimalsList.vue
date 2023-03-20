@@ -1,4 +1,70 @@
 <template>
+  //Диалоговое окно заявки на приобретение питомца :3
+  <q-dialog v-model="prompt" persistent >
+    <q-card style="min-width: 450px;border-radius: 25px;">
+      <q-card-section>
+        <div class="text-h6" style="color: #fefefe">ОСТАВИТЬ ЗАЯВКУ</div>
+      </q-card-section>
+      <q-card-section class="q-pt-none" style="color: #fefefe; ">
+        <q-input
+          standout="bg-primary text-white"
+          filled
+          v-model="req.name"
+          label="Кличка питомца"
+          lazy-rules
+          :rules="[ val => val && val.length > 0 || 'Please type something']"
+        />
+        <div style="display: flex; justify-content: space-between;margin: 0 0 10px">
+          <q-input
+            standout="bg-primary text-white"
+            filled
+            v-model="req.age"
+            label="возраст"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
+          <q-input
+            standout="bg-primary text-white"
+            filled
+            v-model="req.sex"
+            label="пол"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
+        </div>
+        <q-input
+          standout="bg-primary text-white"
+          filled
+          v-model="req.FIO"
+          label="ФИО"
+          lazy-rules
+          :rules="[ val => val && val.length > 0 || 'Please type something']"
+        />
+        <q-input
+          standout="bg-primary text-white"
+          filled
+          v-model="req.phone"
+          label="тел."
+          lazy-rules
+          :rules="[ val => val && val.length > 0 || 'Please type something']"
+        />
+        <q-input
+          standout="bg-primary text-white"
+          filled
+          v-model="req.email"
+          label="почта"
+          lazy-rules
+          :rules="[
+          val => val !== null && val !== '' || 'Please type your age',
+        ]"
+        />
+      </q-card-section>
+      <q-card-actions align="right" class="text-primary">
+        <q-btn style="background: #EF7540; color:white;border-radius: 25px;" flat label="Отмена" v-close-popup />
+        <q-btn style="background: #EF7540; color:white; border-radius: 25px;" flat label="Забрать домой" @click="onSubmit" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
     <div class="wrapper-animals-list">
 
         <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="animal in animals" :key="animal.id">
@@ -52,7 +118,7 @@
 
         </div>
         <div class="flex justify-around">
-            <q-btn color="primary" label="Забрать домой" class="button-animals text-animals"/>
+            <q-btn color="primary" label="Забрать домой" class="button-animals text-animals" @click="prompt = true"/>
             <q-btn color="primary" label="Помощь" class="q-ml-md text-animals button-animals"  />
         </div>
         </q-card-actions>
@@ -63,11 +129,15 @@
 
 </template>
 
-<script setup>
+<script>
 import { useStore } from "vuex"
-import { computed, onMounted } from "vue";
-import queryStore from '../QueryStore/query.js';
 
+import {computed, onMounted, ref} from "vue";
+import queryStore from '../QueryStore/query.js';
+import gql from 'graphql-tag'
+import {useMutation} from "@vue/apollo-composable";
+export default {
+  setup () {
 const store = useStore()
 const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', '', '', ''))
 onMounted(() => {
@@ -77,8 +147,51 @@ onMounted(() => {
       }
 })
 })
-const animals = computed(() => store.getters['animals/ANIMALS'])
 
+    const req =ref({
+      name:'',
+      age:'',
+      sex:'',
+      FIO:'',
+      phone:'',
+      email:''
+    })
+    const name = ref(null)
+    const age = ref(null)
+    const accept = ref(false)
+    const {mutate: onSubmit} = useMutation(gql`
+    mutation MyMutation ($name: String, $age: Int, $sex: String, $FIO: String, $phone: Int, $email: String){
+    insert_requests_one(object: {name: $name, age: $age, sex: $sex, FIO: $FIO, phone: $phone, email: $email}){
+      FIO
+      age
+      email
+      name
+      phone
+      sex
+    }
+    }
+    `,()=>({
+        variables:{
+          name: req.value.name,
+          age:req.value.age,
+          sex:req.value.sex,
+          FIO:req.value.FIO,
+          phone:req.value.phone,
+          email:req.value.email
+        }
+      })
+    )
+    return {
+      animals : computed(() => store.getters['animals/ANIMALS']),
+      prompt: ref(false),
+      req,
+      onSubmit,
+      name,
+      age,
+      accept,
+    }
+  }
+}
 </script>
 
 <style lang="scss">

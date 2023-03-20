@@ -5,7 +5,7 @@
       <q-item v-if="loading">Loading...</q-item>
       <q-item v-else-if="error">Error: {{ error.message }}</q-item>
       <q-item v-for="post in posts" :key="post.id">
-        <q-item-section class="my-box q-hoverable">
+        <q-item-section class="my-box q-hoverable" style="color:white;">
           <q-item-label>
             {{ post.title }}
           </q-item-label>
@@ -13,13 +13,6 @@
         </q-item-section>
       </q-item>
     </q-list>
-    <router-view>
-      <button
-        @click.prevent="$router.push( `/requests` )"
-      >
-        requests
-      </button>
-    </router-view>
   </q-page>
 </template>
 <script>

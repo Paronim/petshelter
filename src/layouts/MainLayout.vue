@@ -14,6 +14,7 @@
       <q-tabs align="left">
         <q-route-tab exact to="/" label="Main" v-ripple />
         <q-route-tab to="/animals/list" label="ANIMALS" />
+        <q-route-tab to="/info" label="Requests" />
         <q-space />
         <q-item id="user-button"></q-item>
         <q-item id="auth-links" dense>
