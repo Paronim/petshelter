@@ -1,6 +1,4 @@
 <template>
-
-
   //Диалоговое окно заявки на приобретение питомца :3
   <q-dialog v-model="prompt" persistent >
     <q-card style="min-width: 450px;border-radius: 25px;">
@@ -67,9 +65,6 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
-
-
-
     <div class="wrapper-animals-list">
 
         <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="animal in animals" :key="animal.id">
@@ -136,6 +131,7 @@
 
 <script>
 import { useStore } from "vuex"
+
 import {computed, onMounted, ref} from "vue";
 import queryStore from '../QueryStore/query.js';
 import gql from 'graphql-tag'
