@@ -12,13 +12,24 @@
         </q-toolbar-title>
       </q-toolbar>
       <q-tabs align="left">
-        <q-route-tab exact to="/" label="Main" v-ripple />
-        <q-route-tab to="/animals/list" label="ANIMALS" />
-        <q-route-tab to="/info" label="Requests" />
+        <q-route-tab
+          exact
+          to="/"
+          label="Главная"
+          class="montserrat-700"
+          v-ripple
+        />
+        <q-route-tab
+          to="/info"
+          label="Заявки"
+          class="montserrat-700"
+          v-ripple
+        />
+        <q-route-tab to="/chat" label="Чат" class="montserrat-700" v-ripple />
         <q-space />
         <q-item id="user-button"></q-item>
-        <q-item id="auth-links" dense>
-          <q-btn flat @click="SignIn">Login</q-btn>
+        <q-item id="auth-links" class="montserrat-700" dense>
+          <q-btn flat @click="SignIn">Вход</q-btn>
         </q-item>
       </q-tabs>
     </q-header>
@@ -31,18 +42,16 @@
       </router-view>
     </q-page-container>
 
-    <q-footer class="bg-grey-8 text-white">
+    <!-- <q-footer class="bg-grey-8 text-white">
       <q-toolbar>
         <q-toolbar-title> </q-toolbar-title>
       </q-toolbar>
-    </q-footer>
+    </q-footer> -->
   </q-layout>
-
 </template>
 
 <script>
 import { defineComponent } from "vue";
-
 
 export default defineComponent({
   name: "MainLayout",
@@ -54,15 +63,13 @@ export default defineComponent({
     return { SignIn };
   },
 });
-
-
 </script>
 
 <style lang="scss">
-  .page-container{
-    background: black;
-  }
-  .header-img {
+.page-container {
+  background: #282828;
+}
+.header-img {
   height: 100%;
   z-index: -1;
   &::after {
@@ -77,4 +84,3 @@ export default defineComponent({
   }
 }
 </style>
-
