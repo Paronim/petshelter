@@ -165,14 +165,14 @@ onMounted(() => {
     const accept = ref(false)
     const {mutate: onSubmit} = useMutation(gql`
     mutation MyMutation ($name: String, $age: Int, $sex: String, $FIO: String, $phone: Int, $email: String){
-    insert_requests_one(object: {name: $name, age: $age, sex: $sex, FIO: $FIO, phone: $phone, email: $email}){
-      FIO
-      age
-      email
-      name
-      phone
-      sex
-    }
+      insert_requests_one(object: {name: $name, age: $age, sex: $sex, FIO: $FIO, phone: $phone, email: $email}){
+        FIO
+        age
+        email
+        name
+        phone
+        sex
+      }
     }
     `,()=>({
         variables:{
