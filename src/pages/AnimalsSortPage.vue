@@ -1,15 +1,13 @@
 <template>
+    <SortAnimalsList/>
+    <FormAddAnimals/>
     <AnimalsList/>
 </template>
 
-<script>
-import AnimalsList from "../components/AnimalsList.vue"
+<script setup>
+import AnimalsList from "../components/AnimalsList.vue";
+import SortAnimalsList from "src/components/SortAnimalsList.vue";
+import FormAddAnimals from "src/components/FormAddAnimals.vue"
 
-export default {
-components: {
-  AnimalsList
-},
-
-}
 </script>
 
