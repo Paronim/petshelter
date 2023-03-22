@@ -10,6 +10,7 @@ try{
       let modifiedVariableSex = ''
       let modifiedVariableSterilization = ''
 
+      
 
         let animalAuxiliAry = state.animals.map((animal) => {
 

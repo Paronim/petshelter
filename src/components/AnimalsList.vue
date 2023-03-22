@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper-animals-list">
 
-        <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="animal in animals" :key="animal.id">
+        <q-card class="my-card q-mx-auto q-mt-lg" style="border-radius: 25px; max-width: 1300px;" flat v-for="(animal) in animals" :key="animal.id">
       <q-card-section horizontal class="card-section-wrapper">
 
         <q-img
@@ -67,16 +67,20 @@
 import { useStore } from "vuex"
 import { computed, onMounted } from "vue";
 import queryStore from '../QueryStore/query.js';
+import { useQuery } from '@vue/apollo-composable';
 
 const store = useStore()
-const GET_DATA_ANIMALS = () => store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', '', '', ''))
+
 onMounted(() => {
-  GET_DATA_ANIMALS().then((response) => {
-      if (response) {
-        console.log('Данные пришли')
-      }
+
+  queryStore.provideApolloClientFunction()
+
+  const { result } = useQuery(queryStore.SORT_ANIMALS('', '', '', ''))
+
+  store.dispatch('animals/GET_DATA_ANIMALS', result)
+
 })
-})
+
 const animals = computed(() => store.getters['animals/ANIMALS'])
 
 </script>

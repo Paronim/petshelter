@@ -2,19 +2,22 @@ import gql from "graphql-tag";
 import { ApolloClient } from '@apollo/client/core'
 import { getClientOptions } from 'src/apollo/index';
 import { provideApolloClient } from "@vue/apollo-composable";
-import { useMutation } from "@vue/apollo-composable";
+import { ref } from "vue";
+
 
 const apolloClient = new ApolloClient(getClientOptions())
 
-export function provideApolloClientFunction () {
+function provideApolloClientFunction () {
 
   provideApolloClient(apolloClient);
 }
 
+const QUERY_ANIMAL = ref()
+
 function SORT_ANIMALS (typeSortVariable, ageSortVariable, sexSortVariable, sterilizationSortVariable) {
-return gql`
+QUERY_ANIMAL.value = gql`
 query MyQuery {
-  animals(order_by: {id: desc}, where: { sex: {${sexSortVariable}}, sterilization: {${sterilizationSortVariable}}, type: {${typeSortVariable}}, _and: {age: {${ageSortVariable}}}}) {
+  animals(order_by: {date: desc}, where: { sex: {${sexSortVariable}}, sterilization: {${sterilizationSortVariable}}, type: {${typeSortVariable}}, _and: {age: {${ageSortVariable}}}}) {
     id
     breed
     info
@@ -27,17 +30,14 @@ query MyQuery {
   }
 }
   `
+  return QUERY_ANIMAL.value
 }
 
-export function ADD_ANIMALS_ADMIN_PANEL(age, breed, info, name, sex, sterilization, type) {
 
-  console.log(sex)
-  console.log(sterilization)
-
-
-  const {mutate: addAnimal} = useMutation(gql`
-      mutation AddNewAnimal ($age: Int, $breed: String, $image: String, $info: String, $name: name, $sex: Boolean, $sterilization: Boolean, $type: String){
-        insert_animals_one(object: {age: $age, breed: $breed, image: $image, info: $info, name: $name, sex: $sex, sterilization: $sterilization, type: $type}){
+   const ADD_ANIMAL = gql`
+      mutation AddNewAnimal ( $age: Int, $breed: String, $image: String, $info: String, $name: name, $sex: Boolean, $sterilization: Boolean, $type: String, $date: date){
+        insert_animals_one(object: { age: $age, breed: $breed, image: $image, info: $info, name: $name, sex: $sex, sterilization: $sterilization, type: $type, date: $date}){
+          id
           age
           breed
           image
@@ -46,27 +46,16 @@ export function ADD_ANIMALS_ADMIN_PANEL(age, breed, info, name, sex, sterilizati
           sex
           sterilization
           type
+          date
     }
     }
-    `, ()=>({
-      variables:{
-        age: age,
-        breed: breed,
-        image: '',
-        info: info,
-        name: name,
-        sex: sex,
-        sterilization: sterilization,
-        type: type
-      }
-      })
-  )
-      addAnimal()
+    `
 
-}
+
 
 
   export default {
     SORT_ANIMALS,
-    ADD_ANIMALS_ADMIN_PANEL
+    provideApolloClientFunction,
+    ADD_ANIMAL
   }
