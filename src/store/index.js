@@ -1,7 +1,8 @@
 import { store } from "quasar/wrappers";
 import { createStore } from "vuex";
-import auth from "./auth-module";
-import animals from './animals-module'
+import auth2_0 from "./module-example";
+import ws from "./ws-module";
+import animals from "./animals-module";
 
 // import example from './module-example'
 
@@ -17,12 +18,10 @@ import animals from './animals-module'
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
+      auth2_0,
       animals,
-      auth,
+      ws,
     },
-
-    // enable strict mode (adds overhead!)
-    // for dev mode and --debug builds only
     strict: process.env.DEBUGGING,
   });
 
