@@ -6,11 +6,11 @@ export function GET_POSTS ({commit}) {
   query MyQuery{
     requests {
       FIO
-      age
       email
       name
       phone
       sex
+      age
     }
   }
   `);

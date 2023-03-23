@@ -30,11 +30,7 @@
         <form @submit.prevent="submitAddAnimal()">
         <q-card-section>
           <p class="text-h5">Фото:</p>
-        <q-input
-        @update:model-value="val => { file = val[0] }"
-        filled
-        type="file"
-        />
+          <input type="file" @change="handleFileUpload">
         </q-card-section>
         <q-card-section>
           <p class="text-h5">Имя:</p>
@@ -124,12 +120,22 @@
 import { ADD_ANIMALS_ADMIN_PANEL } from 'src/QueryStore/query.js'
 import queryStore from '../QueryStore/query.js';
 import { useQuasar } from 'quasar';
-import { ref } from "vue"
-import { useStore } from 'vuex';
+import {mapGetters, useStore} from 'vuex';
+import { ref, reactive } from 'vue'
+import { createClient } from '@supabase/supabase-js'
 
+
+const avatar = ref(null)
+const handleFileUpload = (event) => {
+  avatar.value = event.target.files[0]
+}
+const avatarUrl = ref('');
+const supabase = createClient('https://sjmzojbuschuhwujqawh.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqbXpvamJ1c2NodWh3dWpxYXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk0Mjk4MTMsImV4cCI6MTk5NTAwNTgxM30.6Qw4zPeaT-hKxYNugsyaAkMcw02Bg4nAglpk-GMEhGg');
 const activeFormAddAnimal = ref(false)
 const adminBlock = ref(false)
 const modelAddName = ref('')
+const avatarInput = ref('')
 const modelAddInfo = ref('')
 const modelAddAgeNum = ref()
 const modelAddBreed = ref('')
@@ -209,20 +215,37 @@ const rulesAge = () => {
   }
 }
 
-const submitAddAnimal = () => {
+const submitAddAnimal = async () => {
 
-if(modelAddName.value === '' || modelAddAgeNum.value === null || modelAddAgeNum.value > 13 || modelAddBreed.value === ''){
-  $q.notify({
-        message: `Вы заполнили не все поля верно`,
-        color: 'primary'
-      })
-} else {
-  if(modelAddAge.value.value === 2){
-    modelAddAgeNum.value = modelAddAgeNum.value * 12
-  }
-    ADD_ANIMALS_ADMIN_PANEL(modelAddAgeNum.value, modelAddBreed.value, modelAddInfo.value, modelAddName.value, modelAddSex.value.value, modelAddSterilization.value.value, modelAddType.value.value )
+  if (modelAddName.value === '' || modelAddAgeNum.value === null || modelAddAgeNum.value > 13 || modelAddBreed.value === '') {
+    $q.notify({
+      message: `Вы заполнили не все поля верно`,
+      color: 'primary'
+    })
+  } else {
+    if (modelAddAge.value.value === 2) {
+      modelAddAgeNum.value = modelAddAgeNum.value * 12
+    }
+    ADD_ANIMALS_ADMIN_PANEL(modelAddAgeNum.value, modelAddBreed.value, modelAddInfo.value, modelAddName.value, modelAddSex.value.value, modelAddSterilization.value.value, modelAddType.value.value)
     setTimeout(store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', '', '', '')), 2000)
-}
+  }
+
+  console.log(avatar.value)
+  if (avatar.value) {
+    const { data, error } = await supabase
+      .storage
+      .from('avatars')
+      .upload(avatar.value.name, avatar.value, {
+        cacheControl: '3600',
+        upsert: false
+      })
+    if (error) {
+      console.log(error)
+    } else {
+      this.$store.commit('shareAvatarName', avatar.value);
+      console.log(data)
+    }
+  }
 }
 
 </script>
