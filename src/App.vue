@@ -4,10 +4,12 @@
 
 <script setup>
 import { onMounted } from "vue";
+import { v4 as uuidv4 } from "uuid";
 
 onMounted(() => {
   const publishableKey =
     "pk_test_YWN0aXZlLWtvYWxhLTk4LmNsZXJrLmFjY291bnRzLmRldiQ"; // <- Add Publishable Key here
+  const userUuid = uuidv4();
 
   const startClerk = async () => {
     const Clerk = window.Clerk;
@@ -28,11 +30,20 @@ onMounted(() => {
         // Mount user button component
         Clerk.mountUserButton(userButton);
         userButton.style.margin = "0 15px";
+        localStorage.setItem("user", JSON.stringify(Clerk?.user));
         sessionStorage.setItem(
           "token",
           await Clerk.session.getToken({ template: "hasura" })
         );
       } else {
+        // localStorage.removeItem("user");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            Id: userUuid,
+            firstName: `Пользователь ${userUuid.slice(0, 4)}`,
+          })
+        );
         sessionStorage.setItem("token", "");
       }
     } catch (err) {

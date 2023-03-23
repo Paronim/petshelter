@@ -27,6 +27,7 @@
         />
         <q-route-tab to="/chat" label="Чат" class="montserrat-700" v-ripple />
         <q-space />
+        <q-btn flat @click="getToken">TOKEN</q-btn>
         <q-item id="user-button"></q-item>
         <q-item id="auth-links" class="montserrat-700" dense>
           <q-btn flat @click="SignIn">Вход</q-btn>
@@ -51,10 +52,13 @@ export default defineComponent({
   name: "MainLayout",
 
   setup() {
+    const getToken = async () => {
+      console.log(await window.Clerk.session.getToken({ template: "hasura" }));
+    };
     const SignIn = () => {
       window.Clerk.openSignIn();
     };
-    return { SignIn };
+    return { SignIn, getToken };
   },
 });
 </script>

@@ -4,15 +4,17 @@
       style="width: 100%; max-width: 400px"
       class="q-mt-xl q-pa-md bg-white rounded-borders"
     >
-      <q-list v-for="message in messages" :key="message.id">
-        <q-chat-message
-          bg-color="primary"
-          text-color="white"
-          :name="message.first_name"
-          :text="[message.text]"
-          :sent="checkSent(message)"
-        />
-      </q-list>
+      <q-scroll-area style="height: 250px">
+        <q-list v-for="message in messages" :key="message.id">
+          <q-chat-message
+            bg-color="primary"
+            text-color="white"
+            :name="message.first_name"
+            :text="[message.text]"
+            :sent="checkSent(message)"
+          />
+        </q-list>
+      </q-scroll-area>
       <div class="q-mt-md row items-center justify-end no-wrap">
         <q-input
           v-model="message"
@@ -36,31 +38,52 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { Stomp } from "@stomp/stompjs";
+// import { v4 as uuidv4 } from "uuid";
 
 const messages = ref([]);
 const message = ref("");
 const url = "ws://localhost:15674/ws";
 const client = Stomp.client(url);
-const user = window.Clerk?.user;
-console.log(user);
-console.log(window);
 const headers = {
   login: "chat_user",
   passcode: "chat_user",
 };
+const user = ref({});
+// const userUuid = uuidv4();
+
+console.log("localUser:", JSON.parse(localStorage.user));
+
+if (localStorage.user) {
+  //   localStorage.setItem(
+  //     "user",
+  //     JSON.stringify({
+  //       userId: userUuid,
+  //       userName: `Anonymous ${userUuid.slice(0, 4)}`,
+  //     })
+  //   );
+
+  //   console.log("Анон: ", JSON.parse(localStorage.user));
+  //   const userLocal = JSON.parse(localStorage.user);
+  //   user.value = {
+  //     id: userLocal.userId,
+  //     firstName: userLocal.userName,
+  //   };
+  // } else {
+  //   console.log("Не анон: ", JSON.parse(localStorage.user));
+  user.value = JSON.parse(localStorage.user);
+}
 
 const checkSent = (message) => {
-  return message.user_id === user.id;
+  return message.user_id === user.value.id;
 };
 
 const sendMessage = () => {
   if (message.value.trim()) {
     const messageData = {
-      user_id: user.id,
-      first_name: user.firstName,
+      user_id: user.value.id,
+      first_name: user.value.firstName,
       text: message.value,
     };
-    // messages.value.push(messageData);
     client.send("/exchange/chat", {}, JSON.stringify(messageData));
   } else {
     alert("Пустые сообщения лучше не отправлять");

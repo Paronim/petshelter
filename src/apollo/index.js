@@ -20,6 +20,7 @@ export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
         headers: {
           ...headers,
           Authorization: token ? `Bearer ${token}` : "",
+          "x-hasura-role": "admin",
         },
       };
     }
