@@ -216,9 +216,9 @@ function addAnimal () {
 
   queryStore.provideApolloClientFunction()
 
-  const { result } = useQuery(queryStore.SORT_ANIMALS('', '', '', ''))
-
   const date =  new Date(new Date)
+
+  const { result } = useQuery(queryStore.SORT_ANIMALS('', '', '', ''))
 
   const {mutate: addAnimalMutation } = useMutation(queryStore.ADD_ANIMAL, {
       variables:{
