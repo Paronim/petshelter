@@ -117,14 +117,12 @@
           <div class="flex justify-around">
             <div class="q-ml-lg" style="flex-grow: 1">
               <q-item-section class="q-ml-sm">
-                <q-item-label
-                  v-if="updateOpen"
-                  class="text-h2 text-settings q-mb-md"
-                  >{{ animal.name }}</q-item-label
-                >
+                <q-item-label class="text-h2 text-settings q-mb-md">{{
+                  animal.name
+                }}</q-item-label>
               </q-item-section>
               <q-item-section>
-                <q-item-label v-if="updateOpen" class="text-settings q-mb-md">{{
+                <q-item-label class="text-settings q-mb-md">{{
                   animal.info
                 }}</q-item-label>
               </q-item-section>
@@ -132,27 +130,25 @@
                 <q-item-section class="q-ml-sm">
                   <q-item-label class="text-settings row">
                     <p class="col-6">Возраст:</p>
-                    <p v-if="updateOpen" class="col-6">{{ animal.age }}</p>
+                    <p class="col-6">{{ animal.age }}</p>
                   </q-item-label>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="text-settings row">
                     <p class="col-6">Пол:</p>
-                    <p v-if="updateOpen" class="col-6">{{ animal.sex }}</p>
+                    <p class="col-6">{{ animal.sex }}</p>
                   </q-item-label>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="text-settings row">
                     <p class="col-6">Порода:</p>
-                    <p v-if="updateOpen" class="col-6">{{ animal.breed }}</p>
+                    <p class="col-6">{{ animal.breed }}</p>
                   </q-item-label>
                 </q-item-section>
                 <q-item-section>
                   <q-item-label class="text-settings row">
                     <p class="col-6">Стерилизация:</p>
-                    <p v-if="updateOpen" class="col-6">
-                      {{ animal.sterilization }}
-                    </p>
+                    <p class="col-6">{{ animal.sterilization }}</p>
                   </q-item-label>
                 </q-item-section>
               </div>
@@ -163,6 +159,12 @@
               style="width: 50px; height: 50px"
               name="create"
               @click="openFormUpdate(index)"
+            />
+            <q-icon
+              class="cursor-pointer"
+              style="width: 50px; height: 50px"
+              name="clear"
+              @click="deleteAnimal(index)"
             />
           </div>
           <div class="flex justify-around">
@@ -304,8 +306,6 @@ import gql from "graphql-tag";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { useQuasar } from "quasar";
 import cloneDeep from "lodash/clonedeep";
-
-const updateOpen = ref(true);
 
 const store = useStore();
 
@@ -548,7 +548,39 @@ const submitUpdateAnimal = () => {
       modelUpdateAgeNum.value = modelUpdateAgeNum.value * 12;
     }
   }
+
   UpdateAnimal();
+};
+
+const deleteAnimalId = ref();
+
+const deleteAnimal = (index) => {
+  queryStore.provideApolloClientFunction();
+
+  const { result } = useQuery(queryStore.SORT_ANIMALS("", "", "", ""));
+
+  deleteAnimalId.value = `_eq: "${animals.value[index].id}"`;
+
+  const { mutate: DeleteAnimalMutation } = useMutation(
+    queryStore.DELETE_ANIMAL(deleteAnimalId.value),
+    {
+      update: (cache, { data: { delete_animals } }) => {
+        const data = cloneDeep(
+          cache.readQuery({ query: queryStore.SORT_ANIMALS("", "", "", "") })
+        );
+        data.animals = data.animals.filter(
+          (el) => el.id !== delete_animals.returning[0].id
+        );
+
+        cache.writeQuery({
+          query: queryStore.SORT_ANIMALS("", "", "", ""),
+          data,
+        });
+      },
+      onCompleted: store.dispatch("animals/GET_DATA_ANIMALS", result),
+    }
+  );
+  DeleteAnimalMutation();
 };
 </script>
 

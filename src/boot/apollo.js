@@ -9,6 +9,7 @@ import { getClientOptions } from "src/apollo";
 export default boot(
   /* async */ ({ app }) => {
     // Default client.
+
     const options = /* await */ getClientOptions(/* {app, router ...} */);
     const apolloClient = new ApolloClient(options);
 

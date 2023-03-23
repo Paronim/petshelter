@@ -236,8 +236,6 @@ const rulesAge = () => {
 async function addAnimal() {
   queryStore.provideApolloClientFunction();
 
-  const { result } = useQuery(queryStore.SORT_ANIMALS("", "", "", ""));
-
   const date = new Date(new Date());
 
   if (avatar.value) {
@@ -255,6 +253,8 @@ async function addAnimal() {
       avatarInput.value = `https://sjmzojbuschuhwujqawh.supabase.co/storage/v1/object/public/avatars/${avatar.value.name}`;
     }
   }
+
+  const { result } = useQuery(queryStore.SORT_ANIMALS("", "", "", ""));
 
   const { mutate: addAnimalMutation } = useMutation(queryStore.ADD_ANIMAL, {
     variables: {
@@ -280,6 +280,7 @@ async function addAnimal() {
       });
     },
     onCompleted: store.dispatch("animals/GET_DATA_ANIMALS", result),
+    // >>>>>>> origin/animals-list
   });
   addAnimalMutation();
   modelAddName.value = "";

@@ -95,9 +95,21 @@ function UPDATE_ANIMAL(id) {
       } `;
 }
 
+function DELETE_ANIMAL(id) {
+  return gql`
+      mutation MyMutation {
+        delete_animals(where: {id: {${id}}}) {
+          returning {
+            id
+          }
+        }
+      }`;
+}
+
 export default {
   SORT_ANIMALS,
   provideApolloClientFunction,
   ADD_ANIMAL,
   UPDATE_ANIMAL,
+  DELETE_ANIMAL,
 };
