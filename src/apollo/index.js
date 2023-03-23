@@ -6,7 +6,6 @@ export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
       process.env.GRAPHQL_URI ||
       // Change to your graphql endpoint.
       "https://huge-albacore-77.hasura.app/v1/graphql",
-
   });
   const authLink = setContext((_, { headers }) => {
     const token = sessionStorage.getItem("token");
