@@ -233,12 +233,28 @@ const rulesAge = () => {
   }
 };
 
-function addAnimal() {
+async function addAnimal() {
   queryStore.provideApolloClientFunction();
 
   const { result } = useQuery(queryStore.SORT_ANIMALS("", "", "", ""));
 
   const date = new Date(new Date());
+
+  if (avatar.value) {
+    const { data, error } = await supabase.storage
+      .from("avatars")
+      .upload(avatar.value.name, avatar.value, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+    if (error) {
+      console.log(error);
+    } else {
+      // this.$store.commit('shareAvatarName', avatar.value);
+      console.log(data);
+      avatarInput.value = `https://sjmzojbuschuhwujqawh.supabase.co/storage/v1/object/public/avatars/${avatar.value.name}`;
+    }
+  }
 
   const { mutate: addAnimalMutation } = useMutation(queryStore.ADD_ANIMAL, {
     variables: {
@@ -307,22 +323,6 @@ const submitAddAnimal = async () => {
 
     addAnimal();
     console.log(store.state.animals.animals);
-  }
-
-  if (avatar.value) {
-    const { data, error } = await supabase.storage
-      .from("avatars")
-      .upload(avatar.value.name, avatar.value, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-    avatarInput.value = avatar.value.name;
-    if (error) {
-      console.log(error);
-    } else {
-      // this.$store.commit('shareAvatarName', avatar.value);
-      console.log(data);
-    }
   }
 };
 console.log("avatar до: ", avatar.value);

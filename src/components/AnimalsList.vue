@@ -1,16 +1,21 @@
 <template>
-  <q-dialog v-model="prompt" persistent v-for="animal in animals" :key="animal.id">
+  <q-dialog
+    v-model="prompt"
+    persistent
+    v-for="animal in animals"
+    :key="animal.id"
+  >
     <q-card style="min-width: 450px; border-radius: 25px">
       <q-card-section>
         <div class="text-h6 text-black" style="color: #fefefe">
           ОСТАВИТЬ ЗАЯВКУ
         </div>
       </q-card-section>
-      <q-card-section class="q-pt-none" style="color: #fefefe" >
+      <q-card-section class="q-pt-none" style="color: #fefefe">
         <q-input
           standout="bg-primary text-white"
           filled
-          v-model="animal.name"
+          v-model="req.name"
           label="Кличка питомца"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
@@ -19,12 +24,13 @@
           style="
             display: flex;
             justify-content: space-between;
-            margin: 0 0 10px;"
+            margin: 0 0 10px;
+          "
         >
           <q-input
             standout="bg-primary text-white"
             filled
-            v-model="animal.age"
+            v-model="req.age"
             label="возраст"
             lazy-rules
             :rules="[
@@ -34,7 +40,7 @@
           <q-input
             standout="bg-primary text-white"
             filled
-            v-model="animal.sex"
+            v-model="req.sex"
             label="пол"
             lazy-rules
             :rules="[
@@ -91,17 +97,19 @@
       class="my-card q-mx-auto q-mt-lg"
       style="border-radius: 25px; max-width: 1300px"
       flat
-      v-for="( animal, index ) in animals"
+      v-for="(animal, index) in animals"
       :key="index"
     >
       <q-card-section horizontal class="card-section-wrapper">
         <q-img
           class="row-for-card"
-          style="max-height: 454px;
+          style="
+            max-height: 454px;
             max-width: 800px;
             object-fit: cover;
-            border-radius: 25px;"
-          :src="avatarUrl"
+            border-radius: 25px;
+          "
+          :src="animal.image"
           alt="animal-img"
         />
 
@@ -109,9 +117,11 @@
           <div class="flex justify-around">
             <div class="q-ml-lg" style="flex-grow: 1">
               <q-item-section class="q-ml-sm">
-                <q-item-label v-if="updateOpen" class="text-h2 text-settings q-mb-md">{{
-                  animal.name
-                }}</q-item-label>
+                <q-item-label
+                  v-if="updateOpen"
+                  class="text-h2 text-settings q-mb-md"
+                  >{{ animal.name }}</q-item-label
+                >
               </q-item-section>
               <q-item-section>
                 <q-item-label v-if="updateOpen" class="text-settings q-mb-md">{{
@@ -140,7 +150,9 @@
                 <q-item-section>
                   <q-item-label class="text-settings row">
                     <p class="col-6">Стерилизация:</p>
-                    <p v-if="updateOpen" class="col-6">{{ animal.sterilization }}</p>
+                    <p v-if="updateOpen" class="col-6">
+                      {{ animal.sterilization }}
+                    </p>
                   </q-item-label>
                 </q-item-section>
               </div>
@@ -170,377 +182,374 @@
       </q-card-section>
     </q-card>
 
-    <q-dialog
-  v-model="activeFormUpdateAnimal"
-  full-width
-  >
+    <q-dialog v-model="activeFormUpdateAnimal" full-width>
       <q-card>
         <q-card-section class="row items-center q-pb-none no-wrap">
           <div class="text-h5">Форма изменения данных</div>
           <q-space />
-          <q-btn icon="close" flat round dense v-close-popup/>
+          <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
         <form @submit.prevent="submitUpdateAnimal()">
-        <q-card-section>
-          <p class="text-h5">Фото:</p>
-        <q-input
-        @update:model-value="val => { modelImageUpdate = val[0] }"
-        filled
-        type="file"
-        />
-        </q-card-section>
-        <q-card-section>
-          <p class="text-h5">Имя:</p>
-          <q-input
-            filled
-            standout="bg-primary text-white"
-            ref="inputRef"
-            v-model="modelUpdateName"
-            label="Введите имя"
-            :rules="[val => !!val || 'Field is required']"
-          />
-        </q-card-section>
-        <q-card-section>
-          <p class="text-h5">Информация:</p>
-          <q-input standout="bg-primary text-white" v-model="modelUpdateInfo" label="Введите информация" />
-        </q-card-section>
-        <q-card-section>
-          <p class="text-h5">Возвраст:</p>
-          <div  class="flex justify-start no-warp">
+          <q-card-section>
+            <p class="text-h5">Фото:</p>
             <q-input
-            filled
-            mask="##"
-            style="width: 70%;"
-            standout="bg-primary text-white"
-            ref="inputRef"
-            v-model="modelUpdateAgeNum"
-            label="Введите возраст"
-            :rules="[rulesAge || 'Field is required']"
-          />
-          <q-select
-          style="width: 30%;"
-          filled
-          v-model="modelUpdateAge"
-          :options="optionsUpdateAge"
-          map-options
-        />
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <p class="text-h5">Вид:</p>
-          <q-select
-          filled
-          v-model="modelUpdateType"
-          :options="optionsUpdateType"
-          map-options
-        />
-        </q-card-section>
-        <q-card-section>
-          <p class="text-h5">Пол:</p>
-          <q-select
-          filled
-          v-model="modelUpdateSex"
-          :options="optionsUpdateSex"
-          map-options
-        />
-        </q-card-section>
-        <q-card-section>
-          <p class="text-h5">Порода:</p>
-          <q-input
-            filled
-            standout="bg-primary text-white"
-            ref="inputRef"
-            v-model="modelUpdateBreed"
-            label="Введите порода"
-            :rules="[val => !!val || 'Field is required']"
-          />
-        </q-card-section>
-        <q-card-section>
-          <p class="text-h5">Стерилизация:</p>
-          <q-select
-          filled
-          v-model="modelUpdateSterilization"
-          :options="optionsUpdateSterilization"
-          map-options
-        />
-        </q-card-section>
-        <q-card-section class="flex justify-center">
-          <q-btn style="max-height: 40px; max-width: 200px; border-radius: 25px;" color="primary" label="Изменить" type="submit"/>
-        </q-card-section>
-      </form>
+              @update:model-value="
+                (val) => {
+                  modelImageUpdate = val[0];
+                }
+              "
+              filled
+              type="file"
+            />
+          </q-card-section>
+          <q-card-section>
+            <p class="text-h5">Имя:</p>
+            <q-input
+              filled
+              standout="bg-primary text-white"
+              ref="inputRef"
+              v-model="modelUpdateName"
+              label="Введите имя"
+              :rules="[(val) => !!val || 'Field is required']"
+            />
+          </q-card-section>
+          <q-card-section>
+            <p class="text-h5">Информация:</p>
+            <q-input
+              standout="bg-primary text-white"
+              v-model="modelUpdateInfo"
+              label="Введите информация"
+            />
+          </q-card-section>
+          <q-card-section>
+            <p class="text-h5">Возвраст:</p>
+            <div class="flex justify-start no-warp">
+              <q-input
+                filled
+                mask="##"
+                style="width: 70%"
+                standout="bg-primary text-white"
+                ref="inputRef"
+                v-model="modelUpdateAgeNum"
+                label="Введите возраст"
+                :rules="[rulesAge || 'Field is required']"
+              />
+              <q-select
+                style="width: 30%"
+                filled
+                v-model="modelUpdateAge"
+                :options="optionsUpdateAge"
+                map-options
+              />
+            </div>
+          </q-card-section>
+          <q-card-section>
+            <p class="text-h5">Вид:</p>
+            <q-select
+              filled
+              v-model="modelUpdateType"
+              :options="optionsUpdateType"
+              map-options
+            />
+          </q-card-section>
+          <q-card-section>
+            <p class="text-h5">Пол:</p>
+            <q-select
+              filled
+              v-model="modelUpdateSex"
+              :options="optionsUpdateSex"
+              map-options
+            />
+          </q-card-section>
+          <q-card-section>
+            <p class="text-h5">Порода:</p>
+            <q-input
+              filled
+              standout="bg-primary text-white"
+              ref="inputRef"
+              v-model="modelUpdateBreed"
+              label="Введите порода"
+              :rules="[(val) => !!val || 'Field is required']"
+            />
+          </q-card-section>
+          <q-card-section>
+            <p class="text-h5">Стерилизация:</p>
+            <q-select
+              filled
+              v-model="modelUpdateSterilization"
+              :options="optionsUpdateSterilization"
+              map-options
+            />
+          </q-card-section>
+          <q-card-section class="flex justify-center">
+            <q-btn
+              style="max-height: 40px; max-width: 200px; border-radius: 25px"
+              color="primary"
+              label="Изменить"
+              type="submit"
+            />
+          </q-card-section>
+        </form>
       </q-card>
     </q-dialog>
-
   </div>
 </template>
 
 <script setup>
-import {mapGetters, useStore} from "vuex";
+import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 import queryStore from "../QueryStore/query.js";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { useQuasar } from "quasar";
-import { createClient } from '@supabase/supabase-js';
-import cloneDeep from 'lodash/clonedeep'
+import cloneDeep from "lodash/clonedeep";
 
-const updateOpen = ref(true)
+const updateOpen = ref(true);
 
-    const { myString } = mapGetters(['AVATAR_GET']);
-    const supabase = createClient('https://sjmzojbuschuhwujqawh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqbXpvamJ1c2NodWh3dWpxYXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk0Mjk4MTMsImV4cCI6MTk5NTAwNTgxM30.6Qw4zPeaT-hKxYNugsyaAkMcw02Bg4nAglpk-GMEhGg');
-    const avatarUrl = ref(null)
-    const getAvatarUrl = async () => {
-      const { data, error } = await supabase
-        .storage
-        .from('avatars')
-        .download(myString.name);
-      if (error) {
-        console.error(error);
-      } else {
-        avatarUrl.value = data;
-      }
-    };
-    getAvatarUrl()
+const store = useStore();
 
+const prompt = ref(false);
 
-    const store = useStore();
+onMounted(() => {
+  queryStore.provideApolloClientFunction();
+  const { result } = useQuery(queryStore.SORT_ANIMALS("", "", "", ""));
+  store.dispatch("animals/GET_DATA_ANIMALS", result);
+});
 
-    const prompt = ref(false)
+const animals = computed(() => store.getters["animals/ANIMALS"]);
 
-    onMounted(() => {
-
-      queryStore.provideApolloClientFunction()
-      const { result } = useQuery(queryStore.SORT_ANIMALS('', '', '', ''))
-      store.dispatch('animals/GET_DATA_ANIMALS', result)
-
-    });
-
-    const animals = computed(() => (store.getters["animals/ANIMALS"]))
-
-
-    const req = ref({
-      name: "",
-      sex: "",
-      FIO: "",
-      phone: "",
-      email: "",
-      age: "",
-    });
-    const name = ref(null);
-    const age = ref(null);
-    const accept = ref(false);
-    const { mutate: onSubmit } = useMutation(
-      gql`
-        mutation MyMutation(
-          $name: String
-          $sex: String
-          $FIO: String
-          $phone: Int
-          $email: String
-          $age: String
-        ) {
-          insert_requests_one(
-            object: {
-              name: $name
-              sex: $sex
-              FIO: $FIO
-              phone: $phone
-              email: $email
-              age: $age
-            }
-          ) {
-            FIO
-            email
-            name
-            phone
-            sex
-            age
-          }
+const req = ref({
+  name: "",
+  sex: "",
+  FIO: "",
+  phone: "",
+  email: "",
+  age: "",
+});
+const name = ref(null);
+const age = ref(null);
+const accept = ref(false);
+const { mutate: onSubmit } = useMutation(
+  gql`
+    mutation MyMutation(
+      $name: String
+      $sex: String
+      $FIO: String
+      $phone: Int
+      $email: String
+      $age: String
+    ) {
+      insert_requests_one(
+        object: {
+          name: $name
+          sex: $sex
+          FIO: $FIO
+          phone: $phone
+          email: $email
+          age: $age
         }
-      `,
-      () => ({
-        variables: {
-          name: req.value.name,
-          sex: req.value.sex,
-          FIO: req.value.FIO,
-          phone: req.value.phone,
-          email: req.value.email,
-          age: req.value.age,
-        },
-      })
-    );
+      ) {
+        FIO
+        email
+        name
+        phone
+        sex
+        age
+      }
+    }
+  `,
+  () => ({
+    variables: {
+      name: req.value.name,
+      sex: req.value.sex,
+      FIO: req.value.FIO,
+      phone: req.value.phone,
+      email: req.value.email,
+      age: req.value.age,
+    },
+  })
+);
 
-const activeFormUpdateAnimal = ref(false)
-const modelUpdateName = ref('')
-const modelUpdateInfo = ref('')
-const modelUpdateAgeNum = ref()
-const modelUpdateBreed = ref('')
-const modelUpdateAge = ref()
-const modelUpdateSex = ref()
-const modelUpdateSterilization = ref()
-const modelUpdateType = ref()
-const modelImageUpdate = ref(null)
-const animalId = ref()
+const activeFormUpdateAnimal = ref(false);
+const modelUpdateName = ref("");
+const modelUpdateInfo = ref("");
+const modelUpdateAgeNum = ref();
+const modelUpdateBreed = ref("");
+const modelUpdateAge = ref();
+const modelUpdateSex = ref();
+const modelUpdateSterilization = ref();
+const modelUpdateType = ref();
+const modelImageUpdate = ref(null);
+const animalId = ref();
 
 const openFormUpdate = (index) => {
-  modelUpdateName.value = animals.value[index].name
-  modelUpdateInfo.value = animals.value[index].info
-  if(store.state.animals.animals[index].age <= 12) {
-    modelUpdateAgeNum.value = store.state.animals.animals[index].age
+  modelUpdateName.value = animals.value[index].name;
+  modelUpdateInfo.value = animals.value[index].info;
+  if (store.state.animals.animals[index].age <= 12) {
+    modelUpdateAgeNum.value = store.state.animals.animals[index].age;
     modelUpdateAge.value = {
-      label: 'Месяц',
-      value: 1
-    }
+      label: "Месяц",
+      value: 1,
+    };
   } else {
-    modelUpdateAgeNum.value = store.state.animals.animals[index].age / 12
+    modelUpdateAgeNum.value = store.state.animals.animals[index].age / 12;
     modelUpdateAge.value = {
-      label: 'Год',
-      value: 2
-    }
+      label: "Год",
+      value: 2,
+    };
   }
-  if(store.state.animals.animals[index].sex === true){
+  if (store.state.animals.animals[index].sex === true) {
     modelUpdateSex.value = {
-          label: 'Мальчик',
-          value: true
-        }
+      label: "Мальчик",
+      value: true,
+    };
   } else {
     modelUpdateSex.value = {
-          label: 'Девочка',
-          value: false
-        }
+      label: "Девочка",
+      value: false,
+    };
   }
-  modelUpdateBreed.value = animals.value[index].breed
-  if(store.state.animals.animals[index].sterilization === true){
+  modelUpdateBreed.value = animals.value[index].breed;
+  if (store.state.animals.animals[index].sterilization === true) {
     modelUpdateSterilization.value = {
-          label: 'Есть',
-          value: true
-        }
+      label: "Есть",
+      value: true,
+    };
   } else {
     modelUpdateSterilization.value = {
-          label: 'Нет',
-          value: false
-        }
+      label: "Нет",
+      value: false,
+    };
   }
-  if(store.state.animals.animals[index].type === 'кот'){
+  if (store.state.animals.animals[index].type === "кот") {
     modelUpdateType.value = {
-          label: 'Кот',
-          value: 'кот'
-        }
+      label: "Кот",
+      value: "кот",
+    };
   } else {
     modelUpdateType.value = {
-          label: 'Собака',
-          value: 'собака'
-        }
+      label: "Собака",
+      value: "собака",
+    };
   }
-  animalId.value = `_eq: "${animals.value[index].id}"`
+  animalId.value = `_eq: "${animals.value[index].id}"`;
 
-  activeFormUpdateAnimal.value = !activeFormUpdateAnimal.value
-}
+  activeFormUpdateAnimal.value = !activeFormUpdateAnimal.value;
+};
 
-const $q = useQuasar()
+const $q = useQuasar();
 
 const optionsUpdateAge = [
-        {
-          label: 'Месяц',
-          value: 1
-        },
-        {
-          label: 'Год',
-          value: 2
-        }
-      ]
+  {
+    label: "Месяц",
+    value: 1,
+  },
+  {
+    label: "Год",
+    value: 2,
+  },
+];
 
 const optionsUpdateSex = [
-        {
-          label: 'Мальчик',
-          value: true
-        },
-        {
-          label: 'Девочка',
-          value: false
-        }
-      ]
+  {
+    label: "Мальчик",
+    value: true,
+  },
+  {
+    label: "Девочка",
+    value: false,
+  },
+];
 
 const optionsUpdateSterilization = [
-        {
-          label: 'Есть',
-          value: true
-        },
-        {
-          label: 'Нет',
-          value: false
-        }
-      ]
+  {
+    label: "Есть",
+    value: true,
+  },
+  {
+    label: "Нет",
+    value: false,
+  },
+];
 
 const optionsUpdateType = [
-        {
-          label: 'Кот',
-          value: 'кот'
-        },
-        {
-          label: 'Собака',
-          value: 'собака'
-        }
-      ]
-
+  {
+    label: "Кот",
+    value: "кот",
+  },
+  {
+    label: "Собака",
+    value: "собака",
+  },
+];
 
 const rulesAge = () => {
-  if(modelUpdateAgeNum.value === ''){
-    return false
-  } else if(modelUpdateAge.value === 1 && modelUpdateAgeNum.value > 12){
-    return false
+  if (modelUpdateAgeNum.value === "") {
+    return false;
+  } else if (modelUpdateAge.value === 1 && modelUpdateAgeNum.value > 12) {
+    return false;
   } else {
-    return true
+    return true;
   }
-}
+};
 
-function UpdateAnimal () {
+function UpdateAnimal() {
+  queryStore.provideApolloClientFunction();
 
-  queryStore.provideApolloClientFunction()
+  const { result } = useQuery(queryStore.SORT_ANIMALS("", "", "", ""));
 
-  const { result } = useQuery(queryStore.SORT_ANIMALS('', '', '', ''))
-
-  const {mutate: UpdateAnimalMutation } = useMutation(queryStore.UPDATE_ANIMAL(animalId.value), {
-      variables:{
+  const { mutate: UpdateAnimalMutation } = useMutation(
+    queryStore.UPDATE_ANIMAL(animalId.value),
+    {
+      variables: {
         age: modelUpdateAgeNum.value,
         breed: modelUpdateBreed.value,
-        image: '',
+        image: "",
         info: modelUpdateInfo.value,
         name: modelUpdateName.value,
         sex: modelUpdateSex.value.value,
         sterilization: modelUpdateSterilization.value.value,
         type: modelUpdateType.value.value,
       },
-      update: (cache, { data: { update_animals }}) => {
-        const data = cloneDeep(cache.readQuery({ query: queryStore.SORT_ANIMALS('', '', '', '') }));
-        let indexData = data.animals.indexOf(el => el.id === update_animals.returning[0].id);
-        data.animals[indexData] = update_animals.returning[0]
-        cache.writeQuery({ query: queryStore.SORT_ANIMALS('', '', '', ''), data });
+      update: (cache, { data: { update_animals } }) => {
+        const data = cloneDeep(
+          cache.readQuery({ query: queryStore.SORT_ANIMALS("", "", "", "") })
+        );
+        let indexData = data.animals.indexOf(
+          (el) => el.id === update_animals.returning[0].id
+        );
+        data.animals[indexData] = update_animals.returning[0];
+        cache.writeQuery({
+          query: queryStore.SORT_ANIMALS("", "", "", ""),
+          data,
+        });
       },
-      onCompleted: store.dispatch('animals/GET_DATA_ANIMALS', result)
+      onCompleted: store.dispatch("animals/GET_DATA_ANIMALS", result),
     }
-  )
-  UpdateAnimalMutation()
-  activeFormUpdateAnimal.value = false
+  );
+  UpdateAnimalMutation();
+  activeFormUpdateAnimal.value = false;
 }
 
 const submitUpdateAnimal = () => {
-
-if(modelUpdateName.value === '' || modelUpdateAgeNum.value === null || modelUpdateAgeNum.value > 13 || modelUpdateBreed.value === ''){
-  $q.notify({
-        message: `Вы заполнили не все поля верно`,
-        color: 'primary'
-      })
-} else {
-  if(modelUpdateAge.value.value === 2){
-    modelUpdateAgeNum.value = modelUpdateAgeNum.value * 12
+  if (
+    modelUpdateName.value === "" ||
+    modelUpdateAgeNum.value === null ||
+    modelUpdateAgeNum.value > 13 ||
+    modelUpdateBreed.value === ""
+  ) {
+    $q.notify({
+      message: `Вы заполнили не все поля верно`,
+      color: "primary",
+    });
+  } else {
+    if (modelUpdateAge.value.value === 2) {
+      modelUpdateAgeNum.value = modelUpdateAgeNum.value * 12;
+    }
   }
-}
-  UpdateAnimal()
-}
-
+  UpdateAnimal();
+};
 </script>
 
 <style lang="scss">
