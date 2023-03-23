@@ -1,16 +1,16 @@
 <template>
-  <q-dialog v-model="prompt" persistent>
+  <q-dialog v-model="prompt" persistent v-for="animal in animals" :key="animal.id">
     <q-card style="min-width: 450px; border-radius: 25px">
       <q-card-section>
         <div class="text-h6 text-black" style="color: #fefefe">
           ОСТАВИТЬ ЗАЯВКУ
         </div>
       </q-card-section>
-      <q-card-section class="q-pt-none" style="color: #fefefe">
+      <q-card-section class="q-pt-none" style="color: #fefefe" >
         <q-input
           standout="bg-primary text-white"
           filled
-          v-model="req.name"
+          v-model="animal.name"
           label="Кличка питомца"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
@@ -19,13 +19,12 @@
           style="
             display: flex;
             justify-content: space-between;
-            margin: 0 0 10px;
-          "
+            margin: 0 0 10px;"
         >
           <q-input
             standout="bg-primary text-white"
             filled
-            v-model="req.age"
+            v-model="animal.age"
             label="возраст"
             lazy-rules
             :rules="[
@@ -35,7 +34,7 @@
           <q-input
             standout="bg-primary text-white"
             filled
-            v-model="req.sex"
+            v-model="animal.sex"
             label="пол"
             lazy-rules
             :rules="[
@@ -101,13 +100,8 @@
           style="max-height: 454px;
             max-width: 800px;
             object-fit: cover;
-            border-radius: 25px;
-          "
-          :src="
-            animal.image
-              ? animal.image
-              : 'https://img.freepik.com/free-photo/selective-focus-of-a-black-and-white-adorable-cat-with-its-tongue-out_181624-35744.jpg?w=1380&t=st=1678898647~exp=1678899247~hmac=a0536ffb66c97276e09ad444414201209742f9b0b0e232ff1ae53e27ed07f0e4'
-          "
+            border-radius: 25px;"
+          :src="avatarUrl"
           alt="animal-img"
         />
 
@@ -282,15 +276,34 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex";
+import {mapGetters, useStore} from "vuex";
 import { computed, onMounted, ref } from "vue";
 import queryStore from "../QueryStore/query.js";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import { useQuasar } from "quasar";
+import { createClient } from '@supabase/supabase-js';
 import cloneDeep from 'lodash/clonedeep'
 
-    const updateOpen = ref(true)
+const updateOpen = ref(true)
+
+    const { myString } = mapGetters(['AVATAR_GET']);
+    const supabase = createClient('https://sjmzojbuschuhwujqawh.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqbXpvamJ1c2NodWh3dWpxYXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk0Mjk4MTMsImV4cCI6MTk5NTAwNTgxM30.6Qw4zPeaT-hKxYNugsyaAkMcw02Bg4nAglpk-GMEhGg');
+    const avatarUrl = ref(null)
+    const getAvatarUrl = async () => {
+      const { data, error } = await supabase
+        .storage
+        .from('avatars')
+        .download(myString.name);
+      if (error) {
+        console.error(error);
+      } else {
+        avatarUrl.value = data;
+      }
+    };
+    getAvatarUrl()
+
 
     const store = useStore();
 
@@ -309,11 +322,11 @@ import cloneDeep from 'lodash/clonedeep'
 
     const req = ref({
       name: "",
-      age: "",
       sex: "",
       FIO: "",
       phone: "",
       email: "",
+      age: "",
     });
     const name = ref(null);
     const age = ref(null);
@@ -322,43 +335,42 @@ import cloneDeep from 'lodash/clonedeep'
       gql`
         mutation MyMutation(
           $name: String
-          $age: Int
           $sex: String
           $FIO: String
           $phone: Int
           $email: String
+          $age: String
         ) {
           insert_requests_one(
             object: {
               name: $name
-              age: $age
               sex: $sex
               FIO: $FIO
               phone: $phone
               email: $email
+              age: $age
             }
           ) {
             FIO
-            age
             email
             name
             phone
             sex
+            age
           }
         }
       `,
       () => ({
         variables: {
           name: req.value.name,
-          age: req.value.age,
           sex: req.value.sex,
           FIO: req.value.FIO,
           phone: req.value.phone,
           email: req.value.email,
+          age: req.value.age,
         },
       })
     );
-
 
 const activeFormUpdateAnimal = ref(false)
 const modelUpdateName = ref('')
@@ -528,6 +540,7 @@ if(modelUpdateName.value === '' || modelUpdateAgeNum.value === null || modelUpda
 }
   UpdateAnimal()
 }
+
 </script>
 
 <style lang="scss">
