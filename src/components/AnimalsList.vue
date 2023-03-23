@@ -336,7 +336,7 @@ const { mutate: onSubmit } = useMutation(
       $name: String
       $sex: String
       $FIO: String
-      $phone: Int
+      $phone: String
       $email: String
       $age: String
     ) {
