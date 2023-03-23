@@ -51,11 +51,29 @@ query MyQuery {
     }
     `
 
-
-
+    function UPDATE_ANIMAL (id) {
+      return gql`
+      mutation MyMutation ( $age: Int, $breed: String, $image: String, $info: String, $name: name, $sex: Boolean, $sterilization: Boolean, $type: String){
+        update_animals(where: {id: {${id}}}, _set: {age: $age, breed: $breed, image: $image, info: $info, name: $name, sex: $sex, sterilization: $sterilization, type: $type}) {
+          returning {
+            id
+            age
+            breed
+            image
+            info
+            name
+            sex
+            sterilization
+            type
+            date
+          }
+        }
+      } `
+    }
 
   export default {
     SORT_ANIMALS,
     provideApolloClientFunction,
-    ADD_ANIMAL
+    ADD_ANIMAL,
+    UPDATE_ANIMAL
   }
