@@ -20,6 +20,13 @@
           v-ripple
         />
         <q-route-tab
+          exact
+          to="/posts"
+          label="Посты"
+          class="montserrat-700"
+          v-ripple
+        />
+        <q-route-tab
           to="/info"
           label="Заявки"
           class="montserrat-700"
@@ -53,7 +60,7 @@ export default defineComponent({
 
   setup() {
     const getToken = async () => {
-      console.log(await window.Clerk.session.getToken({ template: "hasura" }));
+      console.log(sessionStorage.getItem("token"));
     };
     const SignIn = () => {
       window.Clerk.openSignIn();

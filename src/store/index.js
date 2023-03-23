@@ -22,7 +22,7 @@ export default store(function (/* { ssrContext } */) {
       animals,
       ws,
     },
-    strict: process.env.DEBUGGING,
+    strict: false,
   });
 
   return Store;
