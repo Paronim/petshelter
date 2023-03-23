@@ -63,7 +63,8 @@
 <script setup>
 import queryStore from '../QueryStore/query.js';
 import { ref, computed } from 'vue';
-import { useStore } from "vuex"
+import { useStore } from "vuex";
+import { useQuery } from '@vue/apollo-composable';
 
 const sortBlock = ref(false)
 const typeSortVariable = ref('')
@@ -121,12 +122,20 @@ const sterilizationSort = () => {
 
 }
 
-const activeSort = () => {
+const activeSort = async () => {
+
+  queryStore.provideApolloClientFunction()
+
   typeSort()
   ageSort()
   sexSort()
   sterilizationSort()
-  store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS(typeSortVariable.value, ageSortVariable.value, sexSortVariable.value, sterilizationSortVariable.value))
+
+  const { result } = useQuery(queryStore.SORT_ANIMALS(typeSortVariable.value, ageSortVariable.value, sexSortVariable.value, sterilizationSortVariable.value), {
+    fetchPolicy: 'network-only'
+  })
+
+  store.dispatch('animals/GET_DATA_ANIMALS', result)
 }
 
 // q-select

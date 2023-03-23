@@ -31,7 +31,7 @@
         <q-card-section>
           <p class="text-h5">Фото:</p>
         <q-input
-        @update:model-value="val => { file = val[0] }"
+        @update:model-value="val => { modelImageAdd = val[0] }"
         filled
         type="file"
         />
@@ -121,11 +121,12 @@
 </template>
 
 <script setup>
-import { ADD_ANIMALS_ADMIN_PANEL } from 'src/QueryStore/query.js'
 import queryStore from '../QueryStore/query.js';
 import { useQuasar } from 'quasar';
 import { ref } from "vue"
 import { useStore } from 'vuex';
+import { useQuery, useMutation } from '@vue/apollo-composable';
+import cloneDeep from 'lodash/clonedeep'
 
 const activeFormAddAnimal = ref(false)
 const adminBlock = ref(false)
@@ -149,6 +150,8 @@ const modelAddType = ref({
           label: 'Кот',
           value: 'кот'
         })
+const modelImageAdd = ref(null)
+
 
 const store = useStore()
 
@@ -209,6 +212,59 @@ const rulesAge = () => {
   }
 }
 
+function addAnimal () {
+
+  queryStore.provideApolloClientFunction()
+
+  const { result } = useQuery(queryStore.SORT_ANIMALS('', '', '', ''))
+
+  const date =  new Date(new Date)
+
+  const {mutate: addAnimalMutation } = useMutation(queryStore.ADD_ANIMAL, {
+      variables:{
+        age: modelAddAgeNum.value,
+        breed: modelAddBreed.value,
+        image: '',
+        info: modelAddInfo.value,
+        name: modelAddName.value,
+        sex: modelAddSex.value.value,
+        sterilization: modelAddSterilization.value.value,
+        type: modelAddType.value.value,
+        date: date.toISOString()
+      },
+      update: (cache, { data: { insert_animals_one }}) => {
+        const data = cloneDeep(cache.readQuery({ query: queryStore.SORT_ANIMALS('', '', '', '') }));
+        console.log(data.animals)
+        data.animals.unshift(insert_animals_one);
+        cache.writeQuery({ query: queryStore.SORT_ANIMALS('', '', '', ''), data });
+      },
+      onCompleted: store.dispatch('animals/GET_DATA_ANIMALS', result)
+    }
+  )
+  addAnimalMutation()
+  modelAddName.value = ''
+  modelAddInfo.value =''
+  modelAddAgeNum.value === null
+  modelAddBreed.value = ''
+  modelAddAge.value ={
+          label: 'Месяц',
+          value: 1
+        }
+  modelAddSex.value ={
+          label: 'Мальчик',
+          value: true
+        }
+  modelAddSterilization.value = {
+          label: 'Есть',
+          value: true
+        }
+  modelAddType.value = {
+          label: 'Кот',
+          value: 'кот'
+        }
+  modelImageAdd.value = null
+}
+
 const submitAddAnimal = () => {
 
 if(modelAddName.value === '' || modelAddAgeNum.value === null || modelAddAgeNum.value > 13 || modelAddBreed.value === ''){
@@ -220,8 +276,9 @@ if(modelAddName.value === '' || modelAddAgeNum.value === null || modelAddAgeNum.
   if(modelAddAge.value.value === 2){
     modelAddAgeNum.value = modelAddAgeNum.value * 12
   }
-    ADD_ANIMALS_ADMIN_PANEL(modelAddAgeNum.value, modelAddBreed.value, modelAddInfo.value, modelAddName.value, modelAddSex.value.value, modelAddSterilization.value.value, modelAddType.value.value )
-    setTimeout(store.dispatch('animals/GET_DATA_ANIMALS', queryStore.SORT_ANIMALS('', '', '', '')), 2000)
+
+  addAnimal()
+  console.log(store.state.animals.animals)
 }
 }
 

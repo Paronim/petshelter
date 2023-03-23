@@ -11,6 +11,7 @@ try{
       let modifiedVariableSterilization = ''
 
 
+
         let animalAuxiliAry = state.animals.map((animal) => {
 
         switch(true){
@@ -59,7 +60,8 @@ try{
         image: animal.image,
         name: animal.name,
         sex: modifiedVariableSex,
-        sterilization: modifiedVariableSterilization
+        sterilization: modifiedVariableSterilization,
+        updateOpen: true
       }
       return newAnimalObject
       })
