@@ -1,6 +1,3 @@
-import Clerk from "@clerk/clerk-js";
-import axios from "axios";
-
 const get = async () => {
   try {
   } catch (error) {
@@ -42,6 +39,7 @@ const userData = {
   update,
   login,
   logout,
+  checkId,
 };
 
 export default userData;

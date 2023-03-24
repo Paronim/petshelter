@@ -505,7 +505,7 @@ function UpdateAnimal() {
       variables: {
         age: modelUpdateAgeNum.value,
         breed: modelUpdateBreed.value,
-        image: "",
+        image: modelImageUpdate.value,
         info: modelUpdateInfo.value,
         name: modelUpdateName.value,
         sex: modelUpdateSex.value.value,
@@ -581,6 +581,9 @@ const deleteAnimal = (index) => {
     }
   );
   DeleteAnimalMutation();
+};
+const checkId = () => {
+  return store.state.roles.users.includes(JSON.parse(localStorage.user).id);
 };
 </script>
 

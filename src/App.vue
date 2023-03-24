@@ -3,8 +3,23 @@
 </template>
 
 <script setup>
+import { useStore } from "vuex";
 import { onMounted } from "vue";
 import { v4 as uuidv4 } from "uuid";
+import { useQuery } from "@vue/apollo-composable";
+import gql from "graphql-tag";
+
+// const store = useStore();
+
+// const { result } = useQuery(gql`
+//   query {
+//     users {
+//       user_id
+//       id
+//     }
+//   }
+// `);
+// store.dispatch("roles/GET_USERS", result);
 
 onMounted(() => {
   const publishableKey =

@@ -280,7 +280,6 @@ async function addAnimal() {
       });
     },
     onCompleted: store.dispatch("animals/GET_DATA_ANIMALS", result),
-    // >>>>>>> origin/animals-list
   });
   addAnimalMutation();
   modelAddName.value = "";

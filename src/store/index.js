@@ -1,7 +1,7 @@
 import { store } from "quasar/wrappers";
 import { createStore } from "vuex";
-import auth2_0 from "./module-example";
-import ws from "./ws-module";
+import auth2_0 from "./requests-module";
+import roles from "./roles-module";
 import animals from "./animals-module";
 
 // import example from './module-example'
@@ -20,7 +20,7 @@ export default store(function (/* { ssrContext } */) {
     modules: {
       auth2_0,
       animals,
-      ws,
+      roles,
     },
     strict: false,
   });

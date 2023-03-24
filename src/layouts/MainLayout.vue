@@ -21,12 +21,13 @@
         />
         <q-route-tab
           exact
-          to="/posts"
-          label="Посты"
+          to="/users"
+          label="Тесты"
           class="montserrat-700"
           v-ripple
         />
         <q-route-tab
+          v-if="checkId()"
           to="/info"
           label="Заявки"
           class="montserrat-700"
@@ -52,22 +53,35 @@
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import { defineComponent } from "vue";
+import { useStore } from "vuex";
+import { useQuery } from "@vue/apollo-composable";
+import { onMounted } from "vue";
+import gql from "graphql-tag";
 
-export default defineComponent({
-  name: "MainLayout",
+const store = useStore();
 
-  setup() {
-    const getToken = async () => {
-      console.log(sessionStorage.getItem("token"));
-    };
-    const SignIn = () => {
-      window.Clerk.openSignIn();
-    };
-    return { SignIn, getToken };
-  },
-});
+const getToken = async () => {
+  console.log(sessionStorage.getItem("token"));
+};
+const SignIn = () => {
+  window.Clerk.openSignIn();
+};
+const checkId = () => {
+  return store.state.roles.users.includes(JSON.parse(localStorage.user).id);
+};
+// onMounted(() => {
+//   // const { result } = useQuery(gql`
+//   //   query {
+//   //     users {
+//   //       user_id
+//   //       id
+//   //     }
+//   //   }
+//   // `);
+//   store.dispatch("roles/GET_USERS");
+// });
 </script>
 
 <style lang="scss">

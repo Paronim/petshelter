@@ -1,15 +1,15 @@
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-export function GET_POSTS({ commit }) {
+export function GET_USERS({ commit }) {
   const { result } = useQuery(gql`
-    query MyQuery {
-      posts {
+    query {
+      users {
+        user_id
         id
-        title
       }
     }
   `);
   console.log("success");
-  commit("SET_POSTS", result);
+  commit("SET_USERS", result);
   return result;
 }

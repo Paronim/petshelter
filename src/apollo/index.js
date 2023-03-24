@@ -1,5 +1,6 @@
 import { createHttpLink, InMemoryCache } from "@apollo/client/core";
 import { setContext } from "@apollo/client/link/context";
+
 export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
   const httpLink = createHttpLink({
     uri:
@@ -20,7 +21,6 @@ export /* async */ function getClientOptions(/* {app, router, ...} */ options) {
         headers: {
           ...headers,
           Authorization: token ? `Bearer ${token}` : "",
-          "x-hasura-role": "admin",
         },
       };
     }
