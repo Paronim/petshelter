@@ -122,6 +122,7 @@
               color="primary"
               label="Добавить"
               type="submit"
+              @click="activeFormAddAnimal = false"
             />
           </q-card-section>
         </form>

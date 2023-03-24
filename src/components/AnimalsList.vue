@@ -1,37 +1,61 @@
 <template>
-  <q-dialog
-    v-model="prompt"
-    persistent
-    v-for="animal in animals"
-    :key="animal.id"
-  >
-    <q-card style="min-width: 450px; border-radius: 25px">
-      <q-card-section>
-        <div class="text-h6 text-black" style="color: #fefefe">
-          ОСТАВИТЬ ЗАЯВКУ
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pt-none" style="color: #fefefe">
-        <q-input
-          standout="bg-primary text-white"
-          filled
-          v-model="req.name"
-          label="Кличка питомца"
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-        />
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            margin: 0 0 10px;
-          "
-        >
+  <q-page class="wrapper-animals-list">
+    <q-dialog
+      v-model="prompt"
+      persistent
+      v-for="animal in animals"
+      :key="animal.id"
+    >
+      <q-card style="min-width: 450px; border-radius: 25px">
+        <q-card-section>
+          <div class="text-h6 text-black" style="color: #fefefe">
+            ОСТАВИТЬ ЗАЯВКУ
+          </div>
+        </q-card-section>
+        <q-card-section class="q-pt-none" style="color: #fefefe">
           <q-input
             standout="bg-primary text-white"
             filled
-            v-model="req.age"
-            label="возраст"
+            v-model="req.name"
+            label="Кличка питомца"
+            lazy-rules
+            :rules="[
+              (val) => (val && val.length > 0) || 'Please type something',
+            ]"
+          />
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin: 0 0 10px;
+            "
+          >
+            <q-input
+              standout="bg-primary text-white"
+              filled
+              v-model="req.age"
+              label="возраст"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please type something',
+              ]"
+            />
+            <q-input
+              standout="bg-primary text-white"
+              filled
+              v-model="req.sex"
+              label="пол"
+              lazy-rules
+              :rules="[
+                (val) => (val && val.length > 0) || 'Please type something',
+              ]"
+            />
+          </div>
+          <q-input
+            standout="bg-primary text-white"
+            filled
+            v-model="req.FIO"
+            label="ФИО"
             lazy-rules
             :rules="[
               (val) => (val && val.length > 0) || 'Please type something',
@@ -40,59 +64,41 @@
           <q-input
             standout="bg-primary text-white"
             filled
-            v-model="req.sex"
-            label="пол"
+            v-model="req.phone"
+            label="тел."
             lazy-rules
             :rules="[
               (val) => (val && val.length > 0) || 'Please type something',
             ]"
           />
-        </div>
-        <q-input
-          standout="bg-primary text-white"
-          filled
-          v-model="req.FIO"
-          label="ФИО"
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-        />
-        <q-input
-          standout="bg-primary text-white"
-          filled
-          v-model="req.phone"
-          label="тел."
-          lazy-rules
-          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
-        />
-        <q-input
-          standout="bg-primary text-white"
-          filled
-          v-model="req.email"
-          label="почта"
-          lazy-rules
-          :rules="[
-            (val) => (val !== null && val !== '') || 'Please type your age',
-          ]"
-        />
-      </q-card-section>
-      <q-card-actions align="right" class="text-primary">
-        <q-btn
-          style="background: #ef7540; color: white; border-radius: 25px"
-          flat
-          label="Отмена"
-          v-close-popup
-        />
-        <q-btn
-          style="background: #ef7540; color: white; border-radius: 25px"
-          flat
-          label="Забрать домой"
-          @click="onSubmit"
-          v-close-popup
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
-  <div class="wrapper-animals-list">
+          <q-input
+            standout="bg-primary text-white"
+            filled
+            v-model="req.email"
+            label="почта"
+            lazy-rules
+            :rules="[
+              (val) => (val !== null && val !== '') || 'Please type your age',
+            ]"
+          />
+        </q-card-section>
+        <q-card-actions align="right" class="text-primary">
+          <q-btn
+            style="background: #ef7540; color: white; border-radius: 25px"
+            flat
+            label="Отмена"
+            v-close-popup
+          />
+          <q-btn
+            style="background: #ef7540; color: white; border-radius: 25px"
+            flat
+            label="Забрать домой"
+            @click="onSubmit"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-card
       class="my-card q-mx-auto q-mt-lg"
       style="border-radius: 25px; max-width: 1300px"
@@ -155,12 +161,14 @@
             </div>
 
             <q-icon
+              v-if="checkId()"
               class="cursor-pointer"
               style="width: 50px; height: 50px"
               name="create"
               @click="openFormUpdate(index)"
             />
             <q-icon
+              v-if="checkId()"
               class="cursor-pointer"
               style="width: 50px; height: 50px"
               name="clear"
@@ -193,7 +201,7 @@
         </q-card-section>
 
         <form @submit.prevent="submitUpdateAnimal()">
-          <q-card-section>
+          <!-- <q-card-section>
             <p class="text-h5">Фото:</p>
             <q-input
               @update:model-value="
@@ -204,7 +212,7 @@
               filled
               type="file"
             />
-          </q-card-section>
+          </q-card-section> -->
           <q-card-section>
             <p class="text-h5">Имя:</p>
             <q-input
@@ -295,7 +303,7 @@
         </form>
       </q-card>
     </q-dialog>
-  </div>
+  </q-page>
 </template>
 
 <script setup>
@@ -380,7 +388,7 @@ const modelUpdateAge = ref();
 const modelUpdateSex = ref();
 const modelUpdateSterilization = ref();
 const modelUpdateType = ref();
-const modelImageUpdate = ref(null);
+// const modelImageUpdate = ref(null);
 const animalId = ref();
 
 const openFormUpdate = (index) => {
@@ -505,7 +513,7 @@ function UpdateAnimal() {
       variables: {
         age: modelUpdateAgeNum.value,
         breed: modelUpdateBreed.value,
-        image: modelImageUpdate.value,
+        // image: modelImageUpdate.value,
         info: modelUpdateInfo.value,
         name: modelUpdateName.value,
         sex: modelUpdateSex.value.value,

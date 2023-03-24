@@ -38,7 +38,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { Stomp } from "@stomp/stompjs";
-// import { v4 as uuidv4 } from "uuid";
 
 const messages = ref([]);
 const message = ref("");
@@ -49,27 +48,10 @@ const headers = {
   passcode: "chat_user",
 };
 const user = ref({});
-// const userUuid = uuidv4();
 
 console.log("localUser:", JSON.parse(localStorage.user));
 
 if (localStorage.user) {
-  //   localStorage.setItem(
-  //     "user",
-  //     JSON.stringify({
-  //       userId: userUuid,
-  //       userName: `Anonymous ${userUuid.slice(0, 4)}`,
-  //     })
-  //   );
-
-  //   console.log("Анон: ", JSON.parse(localStorage.user));
-  //   const userLocal = JSON.parse(localStorage.user);
-  //   user.value = {
-  //     id: userLocal.userId,
-  //     firstName: userLocal.userName,
-  //   };
-  // } else {
-  //   console.log("Не анон: ", JSON.parse(localStorage.user));
   user.value = JSON.parse(localStorage.user);
 }
 

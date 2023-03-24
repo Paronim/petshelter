@@ -15,10 +15,6 @@ const routes = [
         path: "/chat",
         component: () => import("pages/ChatPage.vue"),
       },
-      {
-        path: "/users",
-        component: () => import("pages/TestPage.vue"),
-      },
     ],
   },
   {

@@ -19,13 +19,7 @@
           class="montserrat-700"
           v-ripple
         />
-        <q-route-tab
-          exact
-          to="/users"
-          label="Тесты"
-          class="montserrat-700"
-          v-ripple
-        />
+        <q-route-tab to="/chat" label="Чат" class="montserrat-700" v-ripple />
         <q-route-tab
           v-if="checkId()"
           to="/info"
@@ -33,9 +27,7 @@
           class="montserrat-700"
           v-ripple
         />
-        <q-route-tab to="/chat" label="Чат" class="montserrat-700" v-ripple />
         <q-space />
-        <q-btn flat @click="getToken">TOKEN</q-btn>
         <q-item id="user-button"></q-item>
         <q-item id="auth-links" class="montserrat-700" dense>
           <q-btn flat @click="SignIn">Вход</q-btn>
@@ -54,34 +46,14 @@
 </template>
 
 <script setup>
-import { defineComponent } from "vue";
 import { useStore } from "vuex";
-import { useQuery } from "@vue/apollo-composable";
-import { onMounted } from "vue";
-import gql from "graphql-tag";
-
 const store = useStore();
-
-const getToken = async () => {
-  console.log(sessionStorage.getItem("token"));
-};
 const SignIn = () => {
   window.Clerk.openSignIn();
 };
 const checkId = () => {
   return store.state.roles.users.includes(JSON.parse(localStorage.user).id);
 };
-// onMounted(() => {
-//   // const { result } = useQuery(gql`
-//   //   query {
-//   //     users {
-//   //       user_id
-//   //       id
-//   //     }
-//   //   }
-//   // `);
-//   store.dispatch("roles/GET_USERS");
-// });
 </script>
 
 <style lang="scss">
