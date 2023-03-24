@@ -49,8 +49,6 @@ const headers = {
 };
 const user = ref({});
 
-console.log("localUser:", JSON.parse(localStorage.user));
-
 if (localStorage.user) {
   user.value = JSON.parse(localStorage.user);
 }

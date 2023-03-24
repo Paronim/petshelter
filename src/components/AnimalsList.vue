@@ -34,7 +34,7 @@
               standout="bg-primary text-white"
               filled
               v-model="req.age"
-              label="возраст"
+              label="Возраст"
               lazy-rules
               :rules="[
                 (val) => (val && val.length > 0) || 'Please type something',
@@ -44,7 +44,7 @@
               standout="bg-primary text-white"
               filled
               v-model="req.sex"
-              label="пол"
+              label="Пол"
               lazy-rules
               :rules="[
                 (val) => (val && val.length > 0) || 'Please type something',
@@ -65,7 +65,7 @@
             standout="bg-primary text-white"
             filled
             v-model="req.phone"
-            label="тел."
+            label="Тел."
             lazy-rules
             :rules="[
               (val) => (val && val.length > 0) || 'Please type something',
@@ -75,7 +75,7 @@
             standout="bg-primary text-white"
             filled
             v-model="req.email"
-            label="почта"
+            label="Почта"
             lazy-rules
             :rules="[
               (val) => (val !== null && val !== '') || 'Please type your age',
@@ -119,7 +119,10 @@
           alt="animal-img"
         />
 
-        <q-card-actions vertical class="q-px-md flex column justify-between">
+        <q-card-actions
+          vertical
+          class="q-px-md flex column justify-between no-wrap"
+        >
           <div class="flex justify-around">
             <div class="q-ml-lg" style="flex-grow: 1">
               <q-item-section class="q-ml-sm">
@@ -159,39 +162,32 @@
                 </q-item-section>
               </div>
             </div>
-
-            <q-icon
-              v-if="checkId()"
-              class="cursor-pointer"
-              style="width: 50px; height: 50px"
-              name="create"
-              @click="openFormUpdate(index)"
-            />
-            <q-icon
-              v-if="checkId()"
-              class="cursor-pointer"
-              style="width: 50px; height: 50px"
-              name="clear"
-              @click="deleteAnimal(index)"
-            />
+            <div v-if="checkId()" class="absolute-top-right">
+              <q-icon
+                class="q-my-sm cursor-pointer bg-white rounded-borders"
+                style="width: 50px; height: 50px"
+                name="create"
+                @click="openFormUpdate(index)"
+              />
+              <q-icon
+                class="q-ma-sm cursor-pointer bg-white rounded-borders"
+                style="width: 50px; height: 50px"
+                name="clear"
+                @click="deleteAnimal(index)"
+              />
+            </div>
           </div>
-          <div class="flex justify-around">
+          <div class="flex justify-end">
             <q-btn
               color="primary"
               label="Забрать домой"
-              class="button-animals text-animals"
+              class="q-ma-md button-animals text-animals"
               @click="prompt = true"
-            />
-            <q-btn
-              color="primary"
-              label="Помощь"
-              class="q-ml-md text-animals button-animals"
             />
           </div>
         </q-card-actions>
       </q-card-section>
     </q-card>
-
     <q-dialog v-model="activeFormUpdateAnimal" full-width>
       <q-card>
         <q-card-section class="row items-center q-pb-none no-wrap">
@@ -201,18 +197,6 @@
         </q-card-section>
 
         <form @submit.prevent="submitUpdateAnimal()">
-          <!-- <q-card-section>
-            <p class="text-h5">Фото:</p>
-            <q-input
-              @update:model-value="
-                (val) => {
-                  modelImageUpdate = val[0];
-                }
-              "
-              filled
-              type="file"
-            />
-          </q-card-section> -->
           <q-card-section>
             <p class="text-h5">Имя:</p>
             <q-input
@@ -229,11 +213,11 @@
             <q-input
               standout="bg-primary text-white"
               v-model="modelUpdateInfo"
-              label="Введите информация"
+              label="Введите информацию"
             />
           </q-card-section>
           <q-card-section>
-            <p class="text-h5">Возвраст:</p>
+            <p class="text-h5">Возраст:</p>
             <div class="flex justify-start no-warp">
               <q-input
                 filled
@@ -279,7 +263,7 @@
               standout="bg-primary text-white"
               ref="inputRef"
               v-model="modelUpdateBreed"
-              label="Введите порода"
+              label="Введите породу"
               :rules="[(val) => !!val || 'Field is required']"
             />
           </q-card-section>
@@ -335,9 +319,6 @@ const req = ref({
   email: "",
   age: "",
 });
-const name = ref(null);
-const age = ref(null);
-const accept = ref(false);
 const { mutate: onSubmit } = useMutation(
   gql`
     mutation MyMutation(
@@ -388,7 +369,6 @@ const modelUpdateAge = ref();
 const modelUpdateSex = ref();
 const modelUpdateSterilization = ref();
 const modelUpdateType = ref();
-// const modelImageUpdate = ref(null);
 const animalId = ref();
 
 const openFormUpdate = (index) => {
@@ -513,7 +493,6 @@ function UpdateAnimal() {
       variables: {
         age: modelUpdateAgeNum.value,
         breed: modelUpdateBreed.value,
-        // image: modelImageUpdate.value,
         info: modelUpdateInfo.value,
         name: modelUpdateName.value,
         sex: modelUpdateSex.value.value,

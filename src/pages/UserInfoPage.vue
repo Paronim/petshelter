@@ -6,23 +6,23 @@
       </q-card-section>
       <q-markup-table>
         <thead>
-          <tr>
-            <th class="text-left">ФИО покупателя</th>
-            <th class="text-right">Номер тефефона</th>
-            <th class="text-right">Электронная почта</th>
-            <th class="text-right">Кличка зверюшки</th>
-            <th class="text-right">Возраст</th>
-            <th class="text-right">Пол</th>
+          <tr class="text-left">
+            <th>ФИО покупателя</th>
+            <th>Номер тефефона</th>
+            <th>Электронная почта</th>
+            <th>Кличка зверюшки</th>
+            <th>Возраст</th>
+            <th>Пол</th>
           </tr>
         </thead>
         <tbody v-for="req in POSTS" :key="req.id">
-          <tr>
-            <td class="text-left">{{ req.FIO }}</td>
-            <td class="text-right">{{ req.phone }}</td>
-            <td class="text-right">{{ req.email }}</td>
-            <td class="text-right">{{ req.name }}</td>
-            <td class="text-right">{{ req.age }}</td>
-            <td class="text-right">{{ req.sex }}</td>
+          <tr class="text-left">
+            <td>{{ req.FIO }}</td>
+            <td>{{ req.phone }}</td>
+            <td>{{ req.email }}</td>
+            <td>{{ req.name }}</td>
+            <td>{{ req.age }}</td>
+            <td>{{ req.sex }}</td>
           </tr>
         </tbody>
       </q-markup-table>
@@ -34,10 +34,10 @@ import { mapActions, mapGetters } from "vuex";
 import { defineComponent } from "vue";
 export default defineComponent({
   computed: {
-    ...mapGetters("auth2_0", ["POSTS"]),
+    ...mapGetters("requests", ["POSTS"]),
   },
   methods: {
-    ...mapActions("auth2_0", ["GET_POSTS"]),
+    ...mapActions("requests", ["GET_POSTS"]),
   },
   mounted() {
     this.GET_POSTS();

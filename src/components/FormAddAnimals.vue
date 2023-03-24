@@ -53,11 +53,11 @@
             <q-input
               standout="bg-primary text-white"
               v-model="modelAddInfo"
-              label="Введите информация"
+              label="Введите информацию"
             />
           </q-card-section>
           <q-card-section>
-            <p class="text-h5">Возвраст:</p>
+            <p class="text-h5">Возраст:</p>
             <div class="flex justify-start no-warp">
               <q-input
                 filled
@@ -103,7 +103,7 @@
               standout="bg-primary text-white"
               ref="inputRef"
               v-model="modelAddBreed"
-              label="Введите порода"
+              label="Введите породу"
               :rules="[(val) => !!val || 'Field is required']"
             />
           </q-card-section>
@@ -136,15 +136,13 @@ import queryStore from "../QueryStore/query.js";
 import { useQuasar } from "quasar";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import cloneDeep from "lodash/clonedeep";
-import { mapGetters, useStore } from "vuex";
-import { ref, reactive } from "vue";
+import { useStore } from "vuex";
+import { ref } from "vue";
 import { createClient } from "@supabase/supabase-js";
 
 const avatar = ref(null);
 const handleFileUpload = (event) => {
-  console.log(event);
   avatar.value = event.target.files[0];
-  console.log("avatar после: ", avatar.value);
 };
 const avatarUrl = ref("");
 const supabase = createClient(
@@ -249,7 +247,6 @@ async function addAnimal() {
     if (error) {
       console.log(error);
     } else {
-      // this.$store.commit('shareAvatarName', avatar.value);
       console.log(data);
       avatarInput.value = `https://sjmzojbuschuhwujqawh.supabase.co/storage/v1/object/public/avatars/${avatar.value.name}`;
     }
@@ -273,7 +270,6 @@ async function addAnimal() {
       const data = cloneDeep(
         cache.readQuery({ query: queryStore.SORT_ANIMALS("", "", "", "") })
       );
-      console.log(data.animals);
       data.animals.unshift(insert_animals_one);
       cache.writeQuery({
         query: queryStore.SORT_ANIMALS("", "", "", ""),
@@ -323,8 +319,6 @@ const submitAddAnimal = async () => {
     }
 
     addAnimal();
-    console.log(store.state.animals.animals);
   }
 };
-console.log("avatar до: ", avatar.value);
 </script>

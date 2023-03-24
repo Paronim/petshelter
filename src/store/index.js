@@ -1,6 +1,6 @@
 import { store } from "quasar/wrappers";
 import { createStore } from "vuex";
-import auth2_0 from "./requests-module";
+import requests from "./requests-module";
 import roles from "./roles-module";
 import animals from "./animals-module";
 
@@ -18,7 +18,7 @@ import animals from "./animals-module";
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
-      auth2_0,
+      requests,
       animals,
       roles,
     },
