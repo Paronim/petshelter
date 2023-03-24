@@ -162,7 +162,7 @@
                 </q-item-section>
               </div>
             </div>
-            <div v-if="checkId()" class="absolute-top-right">
+            <div class="absolute-top-right">
               <q-icon
                 class="q-my-sm cursor-pointer bg-white rounded-borders"
                 style="width: 50px; height: 50px"
@@ -568,9 +568,6 @@ const deleteAnimal = (index) => {
     }
   );
   DeleteAnimalMutation();
-};
-const checkId = () => {
-  return store.state.roles.users.includes(JSON.parse(localStorage.user).id);
 };
 </script>
 

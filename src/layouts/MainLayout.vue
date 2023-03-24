@@ -21,7 +21,6 @@
         />
         <q-route-tab to="/chat" label="Чат" class="montserrat-700" v-ripple />
         <q-route-tab
-          v-if="checkId()"
           to="/info"
           label="Заявки"
           class="montserrat-700"
@@ -46,13 +45,8 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex";
-const store = useStore();
 const SignIn = () => {
   window.Clerk.openSignIn();
-};
-const checkId = () => {
-  return store.state.roles.users.includes(JSON.parse(localStorage.user).id);
 };
 </script>
 
