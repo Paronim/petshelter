@@ -7,7 +7,7 @@
         position="50% 35%"
       />
       <q-toolbar>
-        <q-toolbar-title class="text-h1 text-bold">
+        <q-toolbar-title class="text-bold text-size">
           Pet Shelter
         </q-toolbar-title>
       </q-toolbar>
@@ -73,5 +73,8 @@ const checkId = () => {
     right: 0;
     box-shadow: inset 25em 0 10em rgba(0, 0, 0, 0.5);
   }
+}
+.text-size {
+  font-size: 7vw;
 }
 </style>

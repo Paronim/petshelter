@@ -4,7 +4,7 @@
       style="width: 100%; max-width: 400px"
       class="q-mt-xl q-pa-md bg-white rounded-borders"
     >
-      <q-scroll-area style="height: 250px">
+      <q-scroll-area style="height: 300px">
         <q-list v-for="message in messages" :key="message.id">
           <q-chat-message
             bg-color="primary"
